@@ -2,393 +2,1601 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <!-- Viewport updated to force desktop view on mobile -->
-    <meta name="viewport" content="width=1024">
-    <title>Genius Pradip</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCTNS & AEPS Financial Governance Portal</title>
+    <!-- html2pdf.js library for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        :root {
-            --primary: #2c3e50;
-            --secondary: #34495e;
-            --blue-box: #007bff;
-            --red-box: #dc3545;
-            --edit-btn: #ffc107;
-            --add-btn: #28a745;
-            --text: #333;
-        }
-
-        /* Colorful Animated Background */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
-            padding: 20px;
-            color: var(--text);
-            min-height: 100vh;
-            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            /* Forced width to prevent mobile squishing */
-            min-width: 1024px; 
+            padding: 0;
         }
 
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* --- VIEWS --- */
+        .view-section {
+            display: none;
+        }
+        .active-view {
+            display: block !important;
         }
 
-        .container {
-            width: 960px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            box-sizing: border-box;
-        }
-
-        h1 {
-            text-align: center;
-            color: var(--primary);
-            font-size: 2.2em;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 3px solid var(--secondary);
-            padding-bottom: 10px;
-        }
-
-        .section {
-            background: #fff;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-left: 5px solid var(--primary);
-        }
-
-        h2 {
-            color: var(--primary);
-            margin-top: 0;
-            font-size: 1.4em;
-        }
-
-        .input-group {
+        /* --- 1. AEPS STYLE LOGIN PAGE (Right Aligned) --- */
+        #loginView {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            justify-content: flex-end;
             align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            margin: 0;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 10000;
+            background-size: cover;
+            background-position: center;
+            box-sizing: border-box;
+            padding-right: 80px;
         }
-
-        input[type="text"], input[type="number"] {
-            padding: 12px;
+        .aeps-login-wrapper {
+            background: rgba(255, 255, 255, 0.95);
+            width: 380px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border-top: 5px solid #00bfff;
+        }
+        .portal-badges {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .portal-badges span {
+            font-size: 11px;
+            background: #e6f2ff;
+            color: #004080;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 1px solid #b3d1ff;
+        }
+        .aeps-login-wrapper h2 {
+            color: #0f2027;
+            margin-bottom: 5px;
+            font-size: 22px;
+        }
+        .form-group-csc {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group-csc label {
+            font-size: 12px;
+            font-weight: bold;
+            color: #333;
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group-csc input {
+            width: 100%;
+            padding: 10px;
             border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 250px;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
         }
-
-        button {
-            padding: 12px 25px;
-            background: var(--add-btn);
+        .btn-csc {
+            width: 100%;
+            padding: 11px;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
             color: white;
             border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
+            border-radius: 4px;
             font-weight: bold;
-            transition: opacity 0.3s;
-        }
-
-        button:hover { opacity: 0.8; }
-        
-        button.delete-btn {
-            background: var(--red-box);
-            padding: 8px 15px;
+            cursor: pointer;
+            margin-top: 10px;
             font-size: 14px;
         }
+        .btn-csc:hover {
+            opacity: 0.9;
+        }
 
-        button.edit-btn {
-            background: var(--edit-btn);
+        /* OTP Popup Modal */
+        .otp-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 20000;
+        }
+        .otp-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            width: 320px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .timer {
+            color: #d9534f;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        /* Success Popup Modal */
+        .success-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            justify-content: center;
+            align-items: center;
+            z-index: 30000;
+        }
+        .success-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 30px;
+            border-radius: 10px;
+            width: 380px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .success-box h3 {
+            margin-top: 0;
+            color: #155724;
+        }
+
+        /* Preview Modal */
+        .preview-modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            justify-content: center;
+            align-items: center;
+            z-index: 40000;
+        }
+        .preview-content {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 8px;
+            width: 900px;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+            text-align: center;
+        }
+        .preview-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            transform: scale(0.85); 
+            transform-origin: top center;
+        }
+        .close-preview-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            z-index: 50000;
+        }
+
+        /* --- 2. DASHBOARD SHELL --- */
+        #dashboardView {
+            min-height: 100vh;
+            background-color: #f0f4f8;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dashboard-header {
+            background: transparent;
+            padding: 15px 35px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            color: #333;
+            z-index: 100;
+        }
+        .brand-title {
+            font-size: 38px;
+            font-weight: 900;
+            color: #004080;
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .wallet-display {
+            background: #e6f2ff;
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: #004080;
+            border: 1px solid #b3d1ff;
+        }
+        .logo-upload-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: transparent;
+            padding: 5px;
+        }
+        .pencil-btn {
+            background: #ffc107;
             color: #000;
-            padding: 8px 15px;
-            font-size: 14px;
-            margin-right: 5px;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .pencil-btn:hover {
+            background: #e0a800;
         }
 
+        /* Dynamic Navigation Bar */
+        .dashboard-nav {
+            background: #004080;
+            padding: 10px 35px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+            z-index: 100;
+        }
+        .nav-btn {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .nav-btn:hover, .nav-btn.active {
+            background: #0066cc;
+        }
+
+        /* --- 3. DEDICATED PAGE INTERFACES --- */
+        .tab-content {
+            display: none;
+            flex: 1;
+            padding: 40px;
+            box-sizing: border-box;
+            min-height: calc(100vh - 120px);
+        }
+        .active-tab {
+            display: block !important;
+        }
+
+        #homeTab {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            text-align: right;
+            padding-top: 80px;
+        }
+        #servicesTab {
+            background: #f8f9fa;
+            text-align: left;
+        }
+        #trackTab {
+            background: #f8f9fa;
+            text-align: left;
+        }
+        #paymentTab {
+            background: #f8f9fa;
+            text-align: left;
+        }
+        #downloadTab {
+            background: #f8f9fa;
+            text-align: left;
+        }
+        #adminTab {
+            background: #f8f9fa;
+            text-align: left;
+        }
+
+        .page-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .welcome-heading {
+            font-size: 24px;
+            color: #004080;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* UP GOV Sub-buttons Container (Moved to Header) */
+        .upgov-menu {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            position: absolute;
+            top: 40px;
+            right: 0;
+            background: #ffffff;
+            padding: 10px;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 10000;
+            width: 200px;
+        }
+        .upgov-sub-btn {
+            background: #f8f9fa;
+            color: #004080;
+            border: 1px solid #004080;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
+            transition: 0.2s;
+        }
+        .upgov-sub-btn:hover {
+            background: #004080;
+            color: white;
+        }
+
+        /* Tables & Forms */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
+            background: #fff;
         }
-
         th, td {
-            padding: 15px;
+            border: 1px solid #ddd;
+            padding: 10px;
             text-align: center;
-            border: 1px solid #eee;
-            font-size: 16px;
+            font-size: 14px;
         }
-
         th {
-            background: var(--primary);
+            background-color: #004080;
             color: white;
         }
-
-        /* Fixed Expenses Grid */
-        .expenses-grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 10px;
-        }
-        
-        .expenses-grid input {
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-            padding: 10px 5px;
-            font-size: 15px;
-        }
-
-        .total-text {
-            font-weight: bold;
-            color: #28a745;
-            font-size: 1.2em;
-            margin-top: 15px;
-            text-align: right;
-        }
-
-        .final-box {
-            display: inline-block;
-            padding: 10px 20px;
+        .btn-action {
+            padding: 6px 12px;
+            background: #28a745;
             color: white;
-            font-weight: bold;
-            border-radius: 5px;
-            min-width: 90px;
-            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+        .btn-danger {
+            background: #dc3545;
+        }
+        .btn-info {
+            background: #17a2b8;
         }
 
-        .blue-box { background: var(--blue-box); }
-        .red-box { background: var(--red-box); }
-
-        .person-row {
-            background: #f9f9f9;
-            margin-bottom: 20px;
+        /* --- CERTIFICATE FORM STYLES --- */
+        .control-panel {
+            background: #ffffff;
             padding: 20px;
             border-radius: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
         }
-
-        .person-header {
-            font-size: 1.3em;
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 13px;
             font-weight: bold;
-            margin-bottom: 15px;
-            color: var(--primary);
+            margin-bottom: 5px;
+            color: #555;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="file"],
+        .form-group select,
+        .form-group textarea {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            background: #fff;
+            font-family: Arial, sans-serif;
+        }
+        .form-group textarea {
+            resize: vertical;
+            height: 50px;
+        }
+        .sub-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+        .sub-options label {
+            font-weight: normal;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            cursor: pointer;
+        }
+        .panel-buttons {
+            grid-column: span 2;
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
+        /* Certificate Container for PDF Generation */
+        .certificate-container {
+            width: 794px;
+            height: 1050px;
+            background: #ffffff;
+            padding: 40px 50px;
+            box-sizing: border-box;
+            position: fixed;
+            left: -9999px;
+            top: 0;
+            z-index: 999999;
+            visibility: hidden;
+        }
+        .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: flex-start;
+            position: relative;
+            gap: 40px;
+        }
+        .logo-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 110px;
+        }
+        .logo-section img {
+            width: 75px;
+            height: auto;
+            object-fit: contain;
+            margin-bottom: 6px;
+        }
+        .police-title {
+            font-weight: bold;
+            font-size: 14.5px;
+            color: #000;
+            text-align: center;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+        .office-section {
+            font-size: 16px;
+            line-height: 1.55;
+            color: #000;
+            text-align: left;
+            font-weight: bold;
+        }
+        .office-section strong {
+            font-size: 17.5px;
+        }
+        .black-bold-text {
+            color: #000;
+            font-weight: bold;
+        }
+        .header-line {
+            border: none;
+            border-top: 2px solid #333;
+            margin-top: 12px;
+            margin-bottom: 20px;
+        }
+        .meta-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 25px;
+            color: #000;
+            font-weight: bold;
+        }
+        .meta-val {
+            font-weight: bold;
+        }
+        .candidate-photo {
+            position: absolute;
+            top: 235px;
+            right: 50px;
+            width: 100px;
+            height: 115px;
+            border: 1px solid #ccc;
+            object-fit: cover;
+        }
+        .cert-title-container {
+            text-align: center;
+            margin: 130px 0 25px 0; 
+        }
+        .cert-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: underline;
+            color: #000;
+            letter-spacing: 0.5px;
+        }
+        .cert-body {
+            font-size: 15px;
+            line-height: 1.9;
+            color: #000;
+            text-align: justify;
+        }
+        .editable-text {
+            color: #000;
+        }
+        .signature-section {
+            margin-top: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            position: relative;
+        }
+        .sig-watermark {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            width: 90px;
+            opacity: 1.0; 
+            pointer-events: none;
+            z-index: 1;
+        }
+        .sig-content {
+            position: relative;
+            z-index: 2;
+            text-align: right;
+        }
+        .sig-title {
+            font-size: 13px;
+            font-weight: bold;
+            text-align: right;
+            line-height: 1.4;
+            color: #000;
+            margin-right: 10px;
+        }
+        .sig-name {
+            margin-top: 5px;
+            text-align: right;
+            white-space: pre-wrap;
+        }
+        .sig-signed-line {
+            margin-top: 4px;
+            text-align: right;
+            white-space: pre-wrap;
+        }
+        .sig-date {
+            margin-top: 4px;
+            text-align: right;
+            white-space: pre-wrap;
+        }
+        .footer {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            right: 50px;
+        }
+        .footer-line {
+            border: none;
+            border-top: 1px solid #000;
+            margin-bottom: 8px;
+        }
+        .footer-text {
+            font-size: 12px;
+            color: #000;
+            line-height: 1.5;
+        }
     </style>
 </head>
-<body>
+<body onload="initApp()">
 
-<div class="container">
-    <h1>Genius Pradip</h1>
-
-    <!-- 1. Add Name Section -->
-    <div class="section">
-        <h2>1. Add Name & Deposit Amount</h2>
-        <div class="input-group">
-            <input type="text" id="newName" placeholder="Enter Name">
-            <input type="number" id="newDeposit" placeholder="Deposit Amount">
-            <button onclick="addPerson()">Add</button>
-        </div>
-        <p style="color: red; font-size: 15px; margin-top: 5px;" id="errorMsg"></p>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Deposit</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="depositTableBody">
-                <!-- Data will be loaded here -->
-            </tbody>
-        </table>
-    </div>
-
-    <!-- 2. Daily Expenses Section -->
-    <div class="section">
-        <h2>2. Daily Expenses</h2>
-        <div id="expensesContainer">
-            <!-- Expense inputs will be generated here -->
+    <!-- ================= 1. AEPS & GOVERNANCE PORTAL LOGIN ================= -->
+    <div id="loginView" class="view-section active-view">
+        <div class="aeps-login-wrapper">
+            <div class="portal-badges">
+                <span>AEPS</span>
+                <span>AADHAAR</span>
+                <span>PAN</span>
+                <span>CCTNS</span>
+            </div>
+            <h2>Financial & Police Services</h2>
+            <p style="font-size:12px; color:#666; margin-bottom:20px;">Secure Biometric / Aadhaar Authentication Portal</p>
+            <div class="form-group-csc">
+                <label>Aadhaar Card Number:</label>
+                <!-- Test Number -->
+                <input type="text" id="loginAadhaar" placeholder="Enter Aadhaar Number">
+            </div>
+            <button class="btn-csc" onclick="triggerOTP()">Get OTP & Login</button>
         </div>
     </div>
 
-    <!-- 3. Final Decision Section -->
-    <div class="section" style="border-left-color: #28a745;">
-        <h2 style="color: #28a745;">3. Final Decision</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>Deposit</th>
-                    <th>Expenses</th>
-                    <th>Result (Blue=Plus, Red=Minus)</th>
-                </tr>
-            </thead>
-            <tbody id="finalTableBody">
-                <!-- Final results will be loaded here -->
-            </tbody>
-        </table>
+    <!-- OTP Popup Modal -->
+    <div id="otpModal" class="otp-modal">
+        <div class="otp-box">
+            <h3>Enter Aadhaar OTP</h3>
+            <p style="font-size:13px; color:#555;">6-digit OTP sent to registered mobile.</p>
+            <div id="otpDisplay" style="font-size: 22px; font-weight:bold; color:#1e3c72; margin:10px 0; background:#e6f2ff; padding:8px; border-radius:4px;"></div>
+            <div class="timer" id="otpTimer">Time Remaining: 30s</div>
+            <input type="text" id="enteredOtp" placeholder="Enter 6-digit OTP" style="width:100%; padding:8px; text-align:center; font-size:16px; margin-bottom:10px; box-sizing:border-box;">
+            <button class="btn-csc" onclick="verifyOTP()">Verify & Login</button>
+        </div>
     </div>
 
-</div>
+    <!-- Success Popup Modal -->
+    <div id="successModal" class="success-modal">
+        <div class="success-box">
+            <h3>Application Successfully Submitted!</h3>
+            <p>Service Request / Application ID:</p>
+            <div id="successCertNo" style="font-size: 20px; font-weight: bold; margin: 10px 0; background: #fff; padding: 5px; border-radius: 4px;"></div>
+            <p style="font-size: 12px; color: #555;">Auto closing in <span id="successTimer">30</span>s...</p>
+            <button class="btn-csc" style="background:#28a745; margin-top:10px;" onclick="closeSuccessModal()">Close</button>
+        </div>
+    </div>
 
-<script>
-    // Load data from LocalStorage
-    let people = JSON.parse(localStorage.getItem('geniusPradipData_v3')) || [];
+    <!-- Preview Modal -->
+    <div id="previewModal" class="preview-modal">
+        <div class="preview-content">
+            <button class="close-preview-btn" onclick="closePreview()">Close ✖</button>
+            <h3 style="color:#004080; margin-top:0; border-bottom: 2px solid #ccc; padding-bottom:10px;">Certificate Preview</h3>
+            
+            <!-- Scaled Certificate HTML will be cloned here -->
+            <div id="previewWrapper" class="preview-wrapper"></div>
+            
+            <div style="margin-top: -10px; text-align: center;">
+                <button class="btn-csc" style="background:#28a745; width:200px; font-size:16px; padding:12px;" id="confirmDownloadBtn">
+                    Confirm & Download PDF
+                </button>
+            </div>
+        </div>
+    </div>
 
-    // Save to LocalStorage
-    function saveData() {
-        localStorage.setItem('geniusPradipData_v3', JSON.stringify(people));
-        renderUI();
-    }
-
-    // Add New Person
-    function addPerson() {
-        const nameInput = document.getElementById('newName');
-        const depositInput = document.getElementById('newDeposit');
-        const errorMsg = document.getElementById('errorMsg');
-
-        if (people.length >= 10) {
-            errorMsg.innerText = "You can add a maximum of 10 names!";
-            return;
-        }
-
-        if (nameInput.value.trim() === '') {
-            errorMsg.innerText = "Please enter a name!";
-            return;
-        }
-
-        const newPerson = {
-            id: Date.now(),
-            name: nameInput.value.trim(),
-            deposit: Number(depositInput.value) || 0,
-            expenses: [0,0,0,0,0,0,0,0,0,0] // 10 empty expense slots
-        };
-
-        people.push(newPerson);
-        nameInput.value = '';
-        depositInput.value = '';
-        errorMsg.innerText = '';
-        saveData();
-    }
-
-    // Edit Person (Name & Deposit)
-    function editPerson(index) {
-        let currentName = people[index].name;
-        let currentDeposit = people[index].deposit;
-
-        let newName = prompt("Edit Name:", currentName);
-        if (newName === null) return; 
-
-        let newDeposit = prompt("Edit Deposit Amount:", currentDeposit);
-        if (newDeposit === null) return; 
-
-        people[index].name = newName.trim() === '' ? currentName : newName.trim();
-        people[index].deposit = Number(newDeposit) || 0;
+    <!-- ================= 2. DASHBOARD SHELL ================= -->
+    <div id="dashboardView" class="view-section">
         
-        saveData();
-    }
-
-    // Delete Person
-    function deletePerson(index) {
-        if(confirm("Are you sure you want to delete this name?")) {
-            people.splice(index, 1);
-            saveData();
-        }
-    }
-
-    // Update Expense
-    function updateExpense(personIndex, expenseIndex, value) {
-        people[personIndex].expenses[expenseIndex] = Number(value) || 0;
-        saveData();
-    }
-
-    // Calculate Total Expense
-    function getTotalExpense(expensesArray) {
-        return expensesArray.reduce((total, num) => total + num, 0);
-    }
-
-    // Render UI
-    function renderUI() {
-        const depositTableBody = document.getElementById('depositTableBody');
-        const expensesContainer = document.getElementById('expensesContainer');
-        const finalTableBody = document.getElementById('finalTableBody');
-
-        depositTableBody.innerHTML = '';
-        expensesContainer.innerHTML = '';
-        finalTableBody.innerHTML = '';
-
-        people.forEach((person, index) => {
-            let totalExp = getTotalExpense(person.expenses);
-            let finalBalance = person.deposit - totalExp;
-
-            // 1. Add Name Section HTML
-            depositTableBody.innerHTML += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td><strong>${person.name}</strong></td>
-                    <td>${person.deposit}</td>
-                    <td>
-                        <button class="edit-btn" onclick="editPerson(${index})">Edit</button>
-                        <button class="delete-btn" onclick="deletePerson(${index})">Delete</button>
-                    </td>
-                </tr>
-            `;
-
-            // 2. Daily Expenses Section HTML
-            let expenseInputsHTML = '';
-            for (let i = 0; i < 10; i++) {
-                expenseInputsHTML += `<input type="number" placeholder="Day ${i+1}" value="${person.expenses[i] === 0 ? '' : person.expenses[i]}" onchange="updateExpense(${index}, ${i}, this.value)">`;
-            }
-
-            expensesContainer.innerHTML += `
-                <div class="person-row">
-                    <div class="person-header">${index + 1}. ${person.name}</div>
-                    <div class="expenses-grid">
-                        ${expenseInputsHTML}
-                    </div>
-                    <div class="total-text">
-                        Total Expenses: ${totalExp}
+        <!-- Header -->
+        <div class="dashboard-header">
+            <div class="brand-title">CCTNS</div>
+            <div class="header-right">
+                
+                <!-- UP GOV Dropdown (Moved to Top Right) -->
+                <div style="position: relative;">
+                    <button class="btn" style="background:#004080; color:white; padding:6px 12px; font-size:13px;" onclick="toggleUPGovMenu()">UP GOV ▼</button>
+                    <div id="upgovSubMenu" class="upgov-menu">
+                        <!-- এখানে toggleUPGovMenu() সরিয়ে দেওয়া হয়েছে, কারণ switchTab নিজেই মেনুটিকে হাইড করে দেবে -->
+                        <button class="upgov-sub-btn" onclick="switchTab('servicesTab')">Services</button>
+                        <button class="upgov-sub-btn" onclick="switchTab('trackTab')">Track Application</button>
+                        <button class="upgov-sub-btn" onclick="switchTab('paymentTab')">Payment</button>
+                        <button class="upgov-sub-btn" onclick="switchTab('downloadTab')">Download Certificate</button>
+                        <button class="upgov-sub-btn" onclick="switchTab('adminTab')">Departmental Login</button>
                     </div>
                 </div>
-            `;
 
-            // 3. Final Decision Section HTML
-            let boxClass = finalBalance >= 0 ? 'blue-box' : 'red-box';
-            let symbol = finalBalance >= 0 ? '+' : '';
+                <!-- Wallet Balance (Hidden by default, shows only on Payment Tab) -->
+                <div id="walletDisplayContainer" class="wallet-display" style="display: none;">Wallet Balance: ₹<span id="walletBalance">1900</span></div>
+                
+                <!-- Background Upload Button -->
+                <div id="bgUploadContainer" class="logo-upload-container" title="Change Portal Background">
+                    <label class="pencil-btn">
+                        ✏️ <input type="file" accept="image/*" style="display:none;" onchange="uploadPortalBackground(event)">
+                    </label>
+                </div>
+                
+                <button class="btn" style="background:#dc3545; color:white; padding:6px 12px; font-size:13px;" onclick="logout()">Logout</button>
+            </div>
+        </div>
 
-            finalTableBody.innerHTML += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${person.name}</td>
-                    <td>${person.deposit}</td>
-                    <td>${totalExp}</td>
-                    <td>
-                        <div class="final-box ${boxClass}">
-                            ${symbol}${finalBalance}
+        <!-- Dynamic Navigation Bar -->
+        <div id="navBar" class="dashboard-nav">
+            <button class="nav-btn active" onclick="switchTab('homeTab', event)">Home</button>
+        </div>
+
+        <!-- ================= DEDICATED TAB INTERFACES ================= -->
+
+        <!-- TAB 1: HOME (Welcome Page) -->
+        <div id="homeTab" class="tab-content active-tab">
+            <div style="max-width: 650px; margin-left: auto;">
+                <div class="welcome-heading" style="text-shadow: 2px 2px 6px rgba(255,255,255,0.9); font-size: 32px;">Welcome to CCTNS Citizen & Operator Portal</div>
+                <p style="color:#111; font-size:16px; font-weight:bold; text-shadow: 1px 1px 4px rgba(255,255,255,0.9);">Crime and Criminal Tracking Network & Systems - Fast, Reliable and Secure Governance Services.</p>
+                <hr style="margin:25px 0; border:0; border-top:1px solid rgba(0,0,0,0.4);">
+                <h3 style="color:#004080; margin-bottom:15px; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">Available Service</h3>
+                <!-- Note: UP Gov Button has been moved to top right header -->
+            </div>
+        </div>
+
+        <!-- TAB 2: SERVICES (Character Certificate Form) -->
+        <div id="servicesTab" class="tab-content">
+            <div class="page-card">
+                <div class="welcome-heading">Select Service</div>
+                <div style="margin-top:15px;">
+                    <button class="btn" style="background:#004080; color:white;" onclick="openCertificateForm()">Uttar Pradesh - Character Certificate</button>
+                </div>
+
+                <!-- Certificate Form Container -->
+                <div id="certFormWrapper" style="display:none; margin-top:20px;">
+                    <h3 style="color:#004080; border-bottom:2px solid #004080; padding-bottom:5px;">Character Certificate Form</h3>
+                    
+                    <div class="control-panel">
+                        <div class="form-grid">
+                            
+                            <!-- Certificate Logo Upload Group (Will hide permanently after upload) -->
+                            <div class="form-group" id="logoUploadGroup">
+                                <label>Upload Certificate Logo (লোগো একবার আপলোড করলে সারাজীবন সেভ থাকবে):</label>
+                                <input type="file" id="inputLogoFile" accept="image/*" onchange="handleImageUpload(event, 'savedLogo', 'dispLogo')">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>Upload Candidate Photo (ডান দিকের ছবি - বারবার বদলাতে পারবেন):</label>
+                                <input type="file" id="inputPhotoFile" accept="image/*" onchange="previewImage(event, 'dispPhoto')">
+                            </div>
+                            
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Upload Signature Watermark (ওয়াটারমার্ক একবার আপলোড করলে সারাজীবন সেভ থাকবে):</label>
+                                <input type="file" id="inputWatermarkFile" accept="image/*" onchange="handleWatermarkUpload(event)">
+                            </div>
+                            <div class="form-group">
+                                <label>District (উপরে ও নিচে):</label>
+                                <input type="text" id="inputDistrict" value="Gonda" oninput="updateCertificate()">
+                            </div>
+                            <div class="form-group">
+                                <label>Certificate No / Application ID:</label>
+                                <input type="text" id="inputCertNo" value="316462611469" oninput="updateCertificate()">
+                            </div>
+                            <div class="form-group">
+                                <label>Date (তারিখ):</label>
+                                <input type="text" id="inputDate" value="04/04/2026" oninput="updateCertificate()">
+                            </div>
+                            <div class="form-group">
+                                <label>Candidate Name (নাম):</label>
+                                <input type="text" id="inputName" value="Jasvant Singh" oninput="updateCertificate()">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Signature Name (সিগনেচারের নাম):</label>
+                                <textarea id="inputSigName" oninput="updateCertificate()">SHRI ABHISHEK</textarea>
+                                <div class="sub-options">
+                                    <label><input type="checkbox" id="checkSigNameBold" checked onchange="updateCertificate()"> Bold</label>
+                                    <label>Size: 
+                                        <select id="sizeSigName" onchange="updateCertificate()">
+                                            <option value="18px">Small</option>
+                                            <option value="22px" selected>Normal</option>
+                                            <option value="26px">Large</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Digitally Signed Line (স্বাক্ষরিত লাইন):</label>
+                                <textarea id="inputSigSigned" oninput="updateCertificate()">Digitally signed by SHRI ABHISHEK</textarea>
+                                <div class="sub-options">
+                                    <label><input type="checkbox" id="checkSigSignedBold" onchange="updateCertificate()"> Bold</label>
+                                    <label>Size: 
+                                        <select id="sizeSigSigned" onchange="updateCertificate()">
+                                            <option value="10px">Small</option>
+                                            <option value="12px" selected>Normal</option>
+                                            <option value="15px">Large</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Signature Date & Time (তারিখ ও সময়):</label>
+                                <textarea id="inputSigDate" oninput="updateCertificate()">Date: 2026.04.04 11:28:51 +05'30'</textarea>
+                                <div class="sub-options">
+                                    <label><input type="checkbox" id="checkSigDateBold" onchange="updateCertificate()"> Bold</label>
+                                    <label>Size: 
+                                        <select id="sizeSigDate" onchange="updateCertificate()">
+                                            <option value="10px">Small</option>
+                                            <option value="13px" selected>Normal</option>
+                                            <option value="16px">Large</option>
+                                        </select>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Guardian & Address Details:</label>
+                                <input type="text" id="inputGuardian" value="Mr. Bhavani Bhikh Singh, Belapur, resident -Belapur police station- Nawabganj, District- Gonda" oninput="updateCertificate()">
+                            </div>
+                            <div class="form-group" style="grid-column: span 2;">
+                                <label>Police Station Verification Location:</label>
+                                <input type="text" id="inputStation" value="Nawabganj , District Gonda" oninput="updateCertificate()">
+                            </div>
+
+                            <!-- Single Submit Button -->
+                            <div class="panel-buttons">
+                                <button class="btn" style="background:#28a745; color:white; width:100%;" onclick="submitCertificateForm()">Submit Application</button>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            `;
-        });
-    }
+                    </div>
+                </div>
+            </div>
+        </div>
 
-    // Initial render
-    renderUI();
-</script>
+        <!-- TAB 3: TRACK APPLICATION -->
+        <div id="trackTab" class="tab-content">
+            <div class="page-card">
+                <div class="welcome-heading">Track Application Status</div>
+                <div style="margin:20px 0; display:flex; gap:10px;">
+                    <input type="text" id="trackCertNoInput" placeholder="Enter Application ID (e.g. 316462611469)" style="padding:8px; width:300px; border:1px solid #ccc; border-radius:4px;">
+                    <button class="btn-action" onclick="trackApplication()">Search</button>
+                </div>
+                <div id="trackResult" style="margin-top:20px;"></div>
+            </div>
+        </div>
 
+        <!-- TAB 4: PAYMENT -->
+        <div id="paymentTab" class="tab-content">
+            <div class="page-card">
+                <div class="welcome-heading">Pending Payments</div>
+                <p>Pay ₹50 per submitted application.</p>
+                <table id="paymentTable">
+                    <thead>
+                        <tr>
+                            <th>Application ID</th>
+                            <th>Candidate Name</th>
+                            <th>Amount</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- TAB 5: DOWNLOAD CERTIFICATE -->
+        <div id="downloadTab" class="tab-content">
+            <div class="page-card">
+                <div class="welcome-heading">Download Approved Certificate</div>
+                <div style="margin:20px 0; display:flex; gap:10px;">
+                    <input type="text" id="downloadCertNoInput" placeholder="Enter Application ID" style="padding:8px; width:300px; border:1px solid #ccc; border-radius:4px;">
+                    <button class="btn-action" onclick="searchForDownload()">Search</button>
+                </div>
+                <div id="downloadResult"></div>
+            </div>
+        </div>
+
+        <!-- TAB 6: DEPARTMENTAL LOGIN (ADMIN) -->
+        <div id="adminTab" class="tab-content">
+            <div class="page-card">
+                <div class="welcome-heading">Departmental / Admin Approval Portal</div>
+                <div id="adminLoginBox" style="max-width:350px; margin-top:20px;">
+                    <div class="form-group-csc" style="margin-bottom:15px;">
+                        <label>User ID:</label>
+                        <input type="text" id="adminUserId" placeholder="Enter User ID (9064073173)">
+                    </div>
+                    <button class="btn-csc" onclick="adminLogin()">Login as Admin</button>
+                </div>
+
+                <div id="adminDashboard" style="display:none; margin-top:20px;">
+                    <!-- Admin Wallet Control Section -->
+                    <div style="background:#e6f2ff; padding:15px; border-radius:8px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
+                        <div>
+                            <strong>Manage Wallet Balance: </strong> Current: ₹<span id="adminWalletDisplay">1900</span>
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <input type="number" id="walletAmountInput" placeholder="Amount" style="width:90px; padding:5px;">
+                            <button class="btn-action" onclick="adjustWallet('add')">Add</button>
+                            <button class="btn-action btn-danger" onclick="adjustWallet('sub')">Deduct</button>
+                        </div>
+                    </div>
+
+                    <h3>Pending Applications for Approval & Instant Download</h3>
+                    <table id="adminTable">
+                        <thead>
+                            <tr>
+                                <th>Application ID</th>
+                                <th>Candidate Name</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Hidden Master Certificate Container for PDF Generation -->
+    <div id="certificate" class="certificate-container">
+        <div class="header">
+            <div class="logo-section">
+                <img id="dispLogo" src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Uttar_Pradesh_Police_Logo.svg/1200px-Uttar_Pradesh_Police_Logo.svg.png" crossorigin="anonymous" alt="UP Police Logo">
+                <div class="police-title">Uttar Pradesh Police</div>
+            </div>
+            <div class="office-section">
+                <strong>Office</strong><br>
+                Senior Superintendent of Police / Dy Comm. Of Police/<br>
+                Police Officer<br>
+                District- <span id="dispDistrict" class="black-bold-text">Gonda</span>
+            </div>
+        </div>
+        <hr class="header-line">
+        <div class="meta-info">
+            <div>
+                <span>Certificate No. &ndash; </span>
+                <span id="dispCertNo" class="meta-val">316462611469</span>
+            </div>
+            <div>
+                <span>Date- </span>
+                <span id="dispDate" class="meta-val">04/04/2026</span>
+            </div>
+        </div>
+        <img id="dispPhoto" src="https://i.ibb.co.com/84Xw1g9N/AWS-page-0001-1.jpg" crossorigin="anonymous" alt="Candidate Photo" class="candidate-photo">
+        <div class="cert-title-container">
+            <span class="cert-title">Character Certificate</span>
+        </div>
+        <div class="cert-body">
+            It is certified that Mr./Miss/Mrs. <span id="dispName" class="editable-text">Jasvant Singh</span> , 
+            Son/Daughter/Wife/Guardian <span id="dispGuardian" class="editable-text">Mr. Bhavani Bhikh Singh, Belapur, resident &ndash;Belapur police station- Nawabganj, District- Gonda</span> investigation related police station, local intelligence unit and district crime record no adverse entry was found against the said candidate in the police records on getting it done from police station <span id="dispStation" class="editable-text">Nawabganj , District Gonda</span> . This certificate is valid only for one year.
+        </div>
+        <div class="signature-section">
+            <img id="dispWatermark" class="sig-watermark" src="" crossorigin="anonymous" alt="" style="display: none;">
+            <div class="sig-content">
+                <div class="sig-title">
+                    Senior Superintendent of Police / Dy Comm. Of Police /<br>
+                    Superintendent Of Police <span id="dispDistrictSig" class="editable-text">Gonda</span>
+                </div>
+                <div id="dispSigName" class="sig-name">SHRI ABHISHEK</div>
+                <div id="dispSigSigned" class="sig-signed-line">Digitally signed by SHRI ABHISHEK</div>
+                <div id="dispSigDate" class="sig-date">Date: 2026.04.04 11:28:51 +05'30'</div>
+            </div>
+        </div>
+        <div class="footer">
+            <hr class="footer-line">
+            <div class="footer-text">
+                This is a computer generated document so no signature is required.<br>
+                Crime and Criminal Tracking Network and Systems (CCTNS)<br><br>
+                This certificate is not valid for contracting.
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        let applications = [];
+        let wallet = 1900;
+        let generatedOtp = "";
+        let otpCountdown = 30;
+        let timerInterval = null;
+        let successModalTimer = null;
+        let successCountdown = 30;
+
+        function initApp() {
+            const sessionLoginTime = localStorage.getItem('sessionLoginTime');
+            const currentTime = new Date().getTime();
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+
+            if (sessionLoginTime && (currentTime - parseInt(sessionLoginTime) < twentyFourHours)) {
+                document.getElementById('loginView').classList.remove('active-view');
+                document.getElementById('loginView').style.display = 'none';
+                document.getElementById('dashboardView').classList.add('active-view');
+                document.getElementById('dashboardView').style.display = 'flex';
+            }
+
+            const savedApps = localStorage.getItem('cctns_applications');
+            if (savedApps) {
+                applications = JSON.parse(savedApps);
+                checkAutoApprovals();
+            }
+            const savedWallet = localStorage.getItem('cctns_wallet');
+            if (savedWallet !== null) {
+                wallet = parseInt(savedWallet);
+            }
+
+            const savedBg = localStorage.getItem('portalBackground');
+            if (savedBg) {
+                document.getElementById('homeTab').style.backgroundImage = `url('${savedBg}')`;
+                // Background pencil button hide forever
+                document.getElementById('bgUploadContainer').style.display = 'none';
+            }
+
+            loadPersistentData();
+            updateWalletDisplay();
+        }
+
+        function saveDataToStorage() {
+            try {
+                localStorage.setItem('cctns_applications', JSON.stringify(applications));
+                localStorage.setItem('cctns_wallet', wallet.toString());
+            } catch (e) {
+                console.warn("Storage limit reached.");
+            }
+        }
+
+        function checkAutoApprovals() {
+            const currentTime = new Date().getTime();
+            const threeDaysMs = 3 * 24 * 60 * 60 * 1000;
+            let updated = false;
+
+            applications.forEach(app => {
+                if (app.status === 'Under Process' && app.timestamp) {
+                    if (currentTime - app.timestamp >= threeDaysMs) {
+                        app.status = 'Approved';
+                        updated = true;
+                    }
+                }
+            });
+
+            if (updated) {
+                saveDataToStorage();
+            }
+        }
+
+        function toggleUPGovMenu() {
+            const menu = document.getElementById('upgovSubMenu');
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        // --- CSC LOGIN & OTP ---
+        function triggerOTP() {
+            const aadhaar = document.getElementById('loginAadhaar').value.trim();
+            if (aadhaar !== "123456789012") {
+                alert("Please enter the correct Aadhaar Number.");
+                return;
+            }
+            generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+            document.getElementById('otpDisplay').innerText = "OTP: " + generatedOtp;
+            document.getElementById('otpModal').style.display = 'flex';
+            
+            otpCountdown = 30;
+            document.getElementById('otpTimer').innerText = "Time Remaining: " + otpCountdown + "s";
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                otpCountdown--;
+                document.getElementById('otpTimer').innerText = "Time Remaining: " + otpCountdown + "s";
+                if (otpCountdown <= 0) {
+                    clearInterval(timerInterval);
+                    alert("OTP Expired! Please try again.");
+                    document.getElementById('otpModal').style.display = 'none';
+                }
+            }, 1000);
+        }
+
+        function verifyOTP() {
+            const entered = document.getElementById('enteredOtp').value.trim();
+            if (entered === generatedOtp) {
+                clearInterval(timerInterval);
+                document.getElementById('otpModal').style.display = 'none';
+                
+                localStorage.setItem('sessionLoginTime', new Date().getTime().toString());
+
+                const loginView = document.getElementById('loginView');
+                loginView.classList.remove('active-view');
+                loginView.style.display = 'none';
+
+                const dashView = document.getElementById('dashboardView');
+                dashView.classList.add('active-view');
+                dashView.style.display = 'flex';
+            } else {
+                alert("Invalid OTP! Try again.");
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('sessionLoginTime');
+            const dashView = document.getElementById('dashboardView');
+            dashView.classList.remove('active-view');
+            dashView.style.display = 'none';
+
+            const loginView = document.getElementById('loginView');
+            loginView.classList.add('active-view');
+            loginView.style.display = 'flex';
+
+            document.getElementById('loginAadhaar').value = "";
+            document.getElementById('enteredOtp').value = "";
+        }
+
+        // --- NAVIGATION TABS ---
+        function switchTab(tabId, eventObj) {
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(t => t.classList.remove('active-tab'));
+            document.getElementById(tabId).classList.add('active-tab');
+            
+            // Close UP GOV menu if open (এটি মেনুটিকে অটোমেটিক হাইড করবে)
+            document.getElementById('upgovSubMenu').style.display = 'none';
+
+            const navBar = document.getElementById('navBar');
+            if (tabId === 'homeTab') {
+                navBar.innerHTML = `<button class="nav-btn active" onclick="switchTab('homeTab', event)">Home</button>`;
+            } else {
+                navBar.innerHTML = `<button class="nav-btn active" onclick="switchTab('homeTab', event)">Home / Back</button>`;
+            }
+
+            // Wallet visibility logic (Only show in paymentTab)
+            if (tabId === 'paymentTab') {
+                document.getElementById('walletDisplayContainer').style.display = 'block';
+                renderPaymentTable();
+            } else {
+                document.getElementById('walletDisplayContainer').style.display = 'none';
+            }
+            
+            if (tabId === 'adminTab') {
+                checkAutoApprovals();
+                renderAdminTable();
+            }
+        }
+
+        function openCertificateForm() {
+            document.getElementById('certFormWrapper').style.display = 'block';
+        }
+
+        // --- WALLET & SUBMISSION ---
+        function updateWalletDisplay() {
+            document.getElementById('walletBalance').innerText = wallet;
+            const adminDisp = document.getElementById('adminWalletDisplay');
+            if (adminDisp) adminDisp.innerText = wallet;
+        }
+
+        function adjustWallet(action) {
+            const amt = parseInt(document.getElementById('walletAmountInput').value);
+            if (isNaN(amt) || amt <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+            if (action === 'add') {
+                wallet += amt;
+            } else {
+                if (wallet < amt) {
+                    alert("Wallet balance cannot be less than zero!");
+                    return;
+                }
+                wallet -= amt;
+            }
+            saveDataToStorage();
+            updateWalletDisplay();
+            alert("Wallet updated successfully!");
+            document.getElementById('walletAmountInput').value = "";
+        }
+
+        function submitCertificateForm() {
+            updateCertificate();
+            const certNo = document.getElementById('inputCertNo').value.trim();
+            const name = document.getElementById('inputName').value.trim();
+
+            if (!certNo || !name) {
+                alert("Please fill in Application ID and Candidate Name.");
+                return;
+            }
+
+            let existing = applications.find(a => a.certNo === certNo);
+            if (!existing) {
+                applications.push({
+                    certNo: certNo,
+                    name: name,
+                    status: 'Under Process',
+                    paid: false,
+                    timestamp: new Date().getTime()
+                });
+            } else {
+                existing.name = name;
+            }
+
+            saveDataToStorage();
+
+            document.getElementById('successCertNo').innerText = certNo;
+            document.getElementById('successModal').style.display = 'flex';
+            successCountdown = 30;
+            document.getElementById('successTimer').innerText = successCountdown;
+
+            clearInterval(successModalTimer);
+            successModalTimer = setInterval(() => {
+                successCountdown--;
+                document.getElementById('successTimer').innerText = successCountdown;
+                if (successCountdown <= 0) {
+                    closeSuccessModal();
+                }
+            }, 1000);
+        }
+
+        function closeSuccessModal() {
+            clearInterval(successModalTimer);
+            document.getElementById('successModal').style.display = 'none';
+            document.getElementById('certFormWrapper').style.display = 'none';
+            
+            switchTab('homeTab');
+        }
+
+        // --- TRACK APPLICATION ---
+        function trackApplication() {
+            checkAutoApprovals();
+            const query = document.getElementById('trackCertNoInput').value.trim();
+            const resDiv = document.getElementById('trackResult');
+            const found = applications.find(a => a.certNo === query);
+
+            if (found) {
+                resDiv.innerHTML = `
+                    <div style="background:#e6f2ff; padding:15px; border-radius:5px; border:1px solid #b3d1ff;">
+                        <p><strong>Application ID:</strong> ${found.certNo}</p>
+                        <p><strong>Candidate Name:</strong> ${found.name}</p>
+                        <p><strong>Status:</strong> <span style="color:#d9534f; font-weight:bold;">${found.status}</span></p>
+                    </div>
+                `;
+            } else {
+                resDiv.innerHTML = `<p style="color:red;">No application found with this Application ID.</p>`;
+            }
+        }
+
+        // --- PAYMENT GATEWAY ---
+        function renderPaymentTable() {
+            const tbody = document.querySelector('#paymentTable tbody');
+            tbody.innerHTML = '';
+            if (applications.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4">No pending applications found.</td></tr>`;
+                return;
+            }
+            applications.forEach(app => {
+                let actionHtml = app.paid ? '<span style="color:green; font-weight:bold;">Paid (₹50)</span>' : `<button class="btn-action" onclick="makePayment('${app.certNo}')">Pay Now (₹50)</button>`;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${app.certNo}</td>
+                        <td>${app.name}</td>
+                        <td>₹50</td>
+                        <td>${actionHtml}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        function makePayment(certNo) {
+            if (wallet < 50) {
+                alert("Insufficient wallet balance!");
+                return;
+            }
+            wallet -= 50;
+            updateWalletDisplay();
+
+            let app = applications.find(a => a.certNo === certNo);
+            if (app) app.paid = true;
+
+            saveDataToStorage();
+            alert("Payment of ₹50 Successful! ₹50 deducted from wallet.");
+            renderPaymentTable();
+        }
+
+        // --- DOWNLOAD CERTIFICATE SECTION ---
+        function searchForDownload() {
+            checkAutoApprovals();
+            const query = document.getElementById('downloadCertNoInput').value.trim();
+            const resDiv = document.getElementById('downloadResult');
+            const found = applications.find(a => a.certNo === query);
+
+            if (!found) {
+                resDiv.innerHTML = `<p style="color:red;">Application ID not found.</p>`;
+                return;
+            }
+
+            if (found.status !== 'Approved') {
+                resDiv.innerHTML = `<p style="color:orange; font-weight:bold;">Download unavailable! Status is currently "${found.status}". (Applications auto-approve after 3 days).</p>`;
+            } else {
+                resDiv.innerHTML = `
+                    <div style="background:#d4edda; padding:15px; border-radius:5px; margin-top:15px;">
+                        <p><strong>Application ID:</strong> ${found.certNo}</p>
+                        <p><strong>Candidate Name:</strong> ${found.name}</p>
+                        <p style="color:green; font-weight:bold;">Approved!</p>
+                        <button class="btn-action" onclick="downloadPDF('${found.certNo}')">Download PDF Now</button>
+                    </div>
+                `;
+            }
+        }
+
+        // --- 100% BULLETPROOF DOWNLOAD FUNCTION (Untouched) ---
+        function downloadPDF(targetCertNo = null) {
+            if (targetCertNo) {
+                document.getElementById('inputCertNo').value = targetCertNo;
+                updateCertificate();
+            }
+            
+            const element = document.getElementById('certificate');
+            const dashboard = document.getElementById('dashboardView');
+            
+            const scrollY = window.scrollY;
+
+            dashboard.style.display = 'none';
+            
+            element.style.position = 'relative';
+            element.style.visibility = 'visible';
+            element.style.left = 'auto';
+            element.style.top = 'auto';
+            element.style.margin = '0 auto'; 
+            
+            window.scrollTo(0, 0);
+
+            setTimeout(() => {
+                const options = {
+                    margin:       0,
+                    filename:     'Character_Certificate_' + document.getElementById('inputCertNo').value + '.pdf',
+                    image:        { type: 'jpeg', quality: 1 },
+                    html2canvas:  { scale: 2, useCORS: true, logging: false },
+                    jsPDF:        { unit: 'pt', format: 'a4', orientation: 'portrait' }
+                };
+                
+                html2pdf().from(element).set(options).save().then(() => {
+                    element.style.position = 'fixed';
+                    element.style.visibility = 'hidden';
+                    element.style.left = '-9999px';
+                    element.style.margin = '0';
+                    
+                    dashboard.style.display = 'flex'; 
+                    window.scrollTo(0, scrollY); 
+                });
+            }, 300); 
+        }
+
+        // --- PREVIEW FUNCTIONALITY ---
+        function previewCertificate(certNo) {
+            let app = applications.find(a => a.certNo === certNo);
+            if (app) {
+                document.getElementById('inputCertNo').value = app.certNo;
+                document.getElementById('inputName').value = app.name;
+                updateCertificate();
+
+                const certNode = document.getElementById('certificate').cloneNode(true);
+                certNode.id = 'previewCertificateNode';
+                
+                certNode.style.position = 'relative';
+                certNode.style.visibility = 'visible';
+                certNode.style.left = 'auto';
+                certNode.style.top = 'auto';
+                certNode.style.opacity = '1';
+                certNode.style.zIndex = '1';
+                certNode.style.boxShadow = '0 5px 15px rgba(0,0,0,0.3)';
+
+                const wrapper = document.getElementById('previewWrapper');
+                wrapper.innerHTML = '';
+                wrapper.appendChild(certNode);
+
+                document.getElementById('confirmDownloadBtn').onclick = function() {
+                    closePreview();
+                    downloadPDF(certNo);
+                };
+
+                document.getElementById('previewModal').style.display = 'flex';
+            }
+        }
+
+        function closePreview() {
+            document.getElementById('previewModal').style.display = 'none';
+            document.getElementById('previewWrapper').innerHTML = ''; 
+        }
+
+        // --- DEPARTMENTAL ADMIN LOGIN & EDIT/DELETE ---
+        function adminLogin() {
+            const uid = document.getElementById('adminUserId').value.trim();
+            if (uid === "9064073173") {
+                document.getElementById('adminLoginBox').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                checkAutoApprovals();
+                renderAdminTable();
+                alert("Admin Login Successful!");
+            } else {
+                alert("Invalid User ID! Use 9064073173");
+            }
+        }
+
+        function renderAdminTable() {
+            checkAutoApprovals();
+            const tbody = document.querySelector('#adminTable tbody');
+            tbody.innerHTML = '';
+            if (applications.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4">No applications found.</td></tr>`;
+                return;
+            }
+            applications.forEach((app, index) => {
+                let actionBtn = app.status === 'Approved' ? 
+                    `<button class="btn-action btn-info" onclick="previewCertificate('${app.certNo}')">Preview & Download</button>` : 
+                    `<button class="btn-action" onclick="approveApplication('${app.certNo}')">Approve</button> <button class="btn-action btn-info" onclick="previewCertificate('${app.certNo}')">Preview & Download</button>`;
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${app.certNo}</td>
+                        <td>${app.name}</td>
+                        <td>${app.status}</td>
+                        <td>
+                            ${actionBtn}
+                            <button class="btn-action" onclick="editApplication(${index})">Edit</button>
+                            <button class="btn-action btn-danger" onclick="deleteApplication(${index})">Delete</button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        function approveApplication(certNo) {
+            let app = applications.find(a => a.certNo === certNo);
+            if (app) {
+                app.status = 'Approved';
+                saveDataToStorage();
+                alert("Application " + certNo + " Approved Successfully!");
+                renderAdminTable();
+            }
+        }
+
+        function editApplication(index) {
+            let app = applications[index];
+            switchTab('servicesTab');
+            openCertificateForm();
+            document.getElementById('inputCertNo').value = app.certNo;
+            document.getElementById('inputName').value = app.name;
+            updateCertificate();
+            alert("Application data loaded for editing. Modify the details in the form and click Submit to save changes.");
+        }
+
+        function deleteApplication(index) {
+            if (confirm("Are you sure you want to delete this application?")) {
+                applications.splice(index, 1);
+                saveDataToStorage();
+                renderAdminTable();
+                alert("Application Deleted Successfully!");
+            }
+        }
+
+        // --- PERSISTENT LOGO, WATERMARK & BACKGROUND LOGIC WITH SAFE BASE64 ENCODING ---
+        function loadPersistentData() {
+            const savedLogo = localStorage.getItem('savedLogo');
+            if (savedLogo) {
+                document.getElementById('dispLogo').src = savedLogo;
+                // Logo form upload hide forever
+                const logoGroup = document.getElementById('logoUploadGroup');
+                if(logoGroup) logoGroup.style.display = 'none';
+            }
+
+            const savedWatermark = localStorage.getItem('savedWatermark');
+            if (savedWatermark) {
+                const wmImg = document.getElementById('dispWatermark');
+                wmImg.src = savedWatermark;
+                wmImg.style.display = 'block';
+            }
+            updateCertificate();
+        }
+
+        function handleImageUpload(event, storageKey, targetImageId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    document.getElementById(targetImageId).src = base64Data;
+                    try {
+                        localStorage.setItem(storageKey, base64Data);
+                        
+                        // Hide logo button immediately after upload
+                        if (storageKey === 'savedLogo') {
+                            const logoGroup = document.getElementById('logoUploadGroup');
+                            if(logoGroup) logoGroup.style.display = 'none';
+                        }
+                    } catch (err) {
+                        console.warn("Storage limit reached.");
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function handleWatermarkUpload(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    const wmImg = document.getElementById('dispWatermark');
+                    wmImg.src = base64Data;
+                    wmImg.style.display = 'block';
+                    try {
+                        localStorage.setItem('savedWatermark', base64Data);
+                    } catch (err) {
+                        console.warn("Storage limit reached.");
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function uploadPortalBackground(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Data = e.target.result;
+                    document.getElementById('homeTab').style.backgroundImage = `url('${base64Data}')`;
+                    try {
+                        localStorage.setItem('portalBackground', base64Data);
+                    } catch (err) {
+                        console.warn("Storage limit reached.");
+                    }
+                    
+                    // Background upload button hide forever
+                    document.getElementById('bgUploadContainer').style.display = 'none';
+                    alert("Portal Background Updated & Saved Permanently!");
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewImage(event, targetImageId) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(targetImageId).src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function updateCertificate() {
+            document.getElementById('dispDistrict').innerText = document.getElementById('inputDistrict').value;
+            document.getElementById('dispDistrictSig').innerText = document.getElementById('inputDistrict').value;
+            document.getElementById('dispCertNo').innerText = document.getElementById('inputCertNo').value;
+            document.getElementById('dispDate').innerText = document.getElementById('inputDate').value;
+            document.getElementById('dispName').innerText = document.getElementById('inputName').value;
+            document.getElementById('dispGuardian').innerText = document.getElementById('inputGuardian').value;
+            document.getElementById('dispStation').innerText = document.getElementById('inputStation').value;
+
+            const sigNameEl = document.getElementById('dispSigName');
+            sigNameEl.innerText = document.getElementById('inputSigName').value;
+            sigNameEl.style.fontWeight = document.getElementById('checkSigNameBold').checked ? 'bold' : 'normal';
+            sigNameEl.style.fontSize = document.getElementById('sizeSigName').value;
+
+            const sigSignedEl = document.getElementById('dispSigSigned');
+            sigSignedEl.innerText = document.getElementById('inputSigSigned').value;
+            sigSignedEl.style.fontWeight = document.getElementById('checkSigSignedBold').checked ? 'bold' : 'normal';
+            sigSignedEl.style.fontSize = document.getElementById('sizeSigSigned').value;
+
+            const sigDateEl = document.getElementById('dispSigDate');
+            sigDateEl.innerText = document.getElementById('inputSigDate').value;
+            sigDateEl.style.fontWeight = document.getElementById('checkSigDateBold').checked ? 'bold' : 'normal';
+            sigDateEl.style.fontSize = document.getElementById('sizeSigDate').value;
+        }
+    </script>
 </body>
 </html>
