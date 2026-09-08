@@ -674,40 +674,11 @@
     text-transform:uppercase;
     opacity:.9;
 }
-#loginView .cctns-center-logo{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-    width:clamp(95px,13vw,180px);
-    height:clamp(95px,13vw,180px);
-    object-fit:contain;
-    display:none;
-    z-index:3;
-    filter:drop-shadow(0 8px 16px rgba(0,0,0,.45));
-}
-#loginView .cctns-logo-upload{
-    position:absolute;
-    left:50%;
-    top:calc(30% + 115px);
-    transform:translateX(-50%);
-    z-index:4;
-}
-#loginView .cctns-logo-upload label{
-    display:inline-block;
-    padding:9px 18px;
-    border-radius:999px;
-    background:rgba(255,255,255,.15);
-    border:1px solid rgba(255,255,255,.45);
-    color:#fff;
-    font-size:12px;
-    font-weight:700;
-    cursor:pointer;
-    backdrop-filter:blur(8px);
-    box-shadow:0 5px 18px rgba(0,0,0,.25);
-}
-#loginView .cctns-logo-upload label:hover{background:rgba(255,255,255,.25)}
-#loginView .cctns-logo-upload input{display:none}
+#loginView .cctns-logo-editor{position:absolute;top:50%;left:50%;width:clamp(95px,13vw,180px);height:clamp(95px,13vw,180px);transform:translate(-50%,-50%);z-index:4;}
+#loginView .cctns-center-logo{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:none;z-index:3;filter:drop-shadow(0 8px 16px rgba(0,0,0,.45));}
+#loginView .cctns-logo-pencil{position:absolute;right:-12px;bottom:-8px;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#ff8c00,#ff3cac,#7f00ff);border:2px solid #fff;color:#fff;font-size:20px;font-weight:900;line-height:1;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.35);z-index:6;transition:transform .2s ease,filter .2s ease;}
+#loginView .cctns-logo-pencil:hover{transform:scale(1.1) rotate(-8deg);filter:brightness(1.1)}
+#loginView .cctns-logo-pencil input{display:none}
 #loginView .aeps-login-wrapper{
     position:fixed;
     z-index:5;
@@ -762,54 +733,12 @@
 }
 
 /* ===== LOGIN PAGE STATE DIVISION BUTTONS (visual only) ===== */
-#loginView .state-division-buttons{
-    position:fixed;
-    left:50%;
-    bottom:22px;
-    transform:translateX(-50%);
-    z-index:6;
-    display:flex;
-    gap:16px;
-    justify-content:center;
-    align-items:center;
-}
-#loginView .state-division-btn{
-    width:190px;
-    min-height:72px;
-    padding:8px 14px;
-    border:1px solid rgba(255,255,255,.55);
-    border-radius:14px;
-    background:rgba(255,255,255,.13);
-    color:#fff;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
-    font-size:14px;
-    font-weight:800;
-    letter-spacing:.3px;
-    cursor:pointer;
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
-    box-shadow:0 8px 25px rgba(0,0,0,.28);
-    transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
-}
-#loginView .state-division-btn:hover{
-    transform:translateY(-3px);
-    background:rgba(255,255,255,.22);
-    box-shadow:0 12px 30px rgba(0,0,0,.35);
-}
-#loginView .state-map-icon{
-    width:48px;
-    height:54px;
-    flex:0 0 48px;
-    filter:drop-shadow(0 3px 5px rgba(0,0,0,.3));
-}
-@media(max-width:700px){
-    #loginView .state-division-buttons{bottom:62px;gap:8px;width:96%;}
-    #loginView .state-division-btn{width:calc(50% - 4px);min-height:62px;padding:7px 8px;font-size:11px;gap:6px;}
-    #loginView .state-map-icon{width:38px;height:44px;flex-basis:38px;}
-}
+#loginView .state-division-buttons{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);z-index:6;display:flex;gap:16px;justify-content:center;align-items:center;}
+#loginView .state-division-btn{width:210px;min-height:62px;padding:10px 18px;border:1px solid rgba(255,255,255,.72);border-radius:16px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:900;letter-spacing:.35px;cursor:pointer;box-shadow:0 10px 28px rgba(0,0,0,.30),inset 0 1px 0 rgba(255,255,255,.35);transition:transform .2s ease,filter .2s ease,box-shadow .2s ease;text-shadow:0 2px 4px rgba(0,0,0,.35);}
+#loginView .wb-division-btn{background:linear-gradient(135deg,#ff512f 0%,#f09819 48%,#ff3cac 100%);}
+#loginView .mh-division-btn{background:linear-gradient(135deg,#00c6ff 0%,#0072ff 48%,#7f00ff 100%);}
+#loginView .state-division-btn:hover{transform:translateY(-4px) scale(1.02);filter:brightness(1.08) saturate(1.12);box-shadow:0 14px 34px rgba(0,0,0,.38),inset 0 1px 0 rgba(255,255,255,.45);}
+@media(max-width:700px){#loginView .state-division-buttons{bottom:62px;gap:8px;width:96%;}#loginView .state-division-btn{width:48%;min-height:56px;padding:8px 10px;font-size:12px;}}
 @media(max-width:700px){
     #loginView .cctns-login-banner{top:15px}
     #loginView .cctns-banner-text{letter-spacing:5px}
@@ -829,13 +758,9 @@
             <div class="cctns-subtitle">Citizen &amp; Operator Portal</div>
         </div>
 
-        <img id="cctnsLoginLogo" class="cctns-center-logo" alt="Portal Logo">
-
-        <div id="cctnsLogoUpload" class="cctns-logo-upload">
-            <label title="Upload logo once">
-                Upload Logo
-                <input id="cctnsLoginLogoInput" type="file" accept="image/*" onchange="saveLoginLogo(event)">
-            </label>
+        <div id="cctnsLogoEditor" class="cctns-logo-editor">
+            <img id="cctnsLoginLogo" class="cctns-center-logo" alt="Portal Logo">
+            <label class="cctns-logo-pencil" title="Change Logo">✎<input id="cctnsLoginLogoInput" type="file" accept="image/*" onchange="saveLoginLogo(event)"></label>
         </div>
 
         <div id="cctnsLoginTools" class="cctns-login-tools">
@@ -1370,51 +1295,28 @@
         function saveLoginLogo(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
-            if (!file.type.startsWith('image/')) {
-                alert('Please select an image file.');
-                return;
-            }
+            if (!file.type.startsWith('image/')) { alert('Please select an image file.'); return; }
             const reader = new FileReader();
             reader.onload = function(e) {
                 const data = e.target.result;
-                const upload = document.getElementById('cctnsLogoUpload');
                 saveLoginLogoToDB(data).then(() => {
-                    localStorage.removeItem('cctns_login_logo');
+                    localStorage.setItem('cctns_login_logo', data);
                     applySavedLoginLogo();
-                    if (upload) upload.style.display = 'none';
                     alert('Logo saved permanently on this browser.');
                 }).catch(() => {
-                    try {
-                        localStorage.setItem('cctns_login_logo', data);
-                        applySavedLoginLogo();
-                        if (upload) upload.style.display = 'none';
-                        alert('Logo saved permanently on this browser.');
-                    } catch (err) {
-                        alert('Unable to save the logo. Please try a smaller image.');
-                    }
+                    try { localStorage.setItem('cctns_login_logo', data); applySavedLoginLogo(); alert('Logo saved on this browser.'); }
+                    catch (err) { alert('Unable to save the logo. Please try a smaller image.'); }
                 });
+                event.target.value = '';
             };
             reader.readAsDataURL(file);
         }
 
         function applySavedLoginLogo() {
             const img = document.getElementById('cctnsLoginLogo');
-            const upload = document.getElementById('cctnsLogoUpload');
-            if (!img || !upload) return;
-            const showLogo = data => {
-                if (data) {
-                    img.src = data;
-                    img.style.display = 'block';
-                    upload.style.display = 'none';
-                } else {
-                    img.style.display = 'none';
-                    upload.style.display = 'block';
-                }
-            };
-            getLoginLogoFromDB().then(data => {
-                if (data) { showLogo(data); return; }
-                showLogo(localStorage.getItem('cctns_login_logo'));
-            }).catch(() => showLogo(localStorage.getItem('cctns_login_logo')));
+            if (!img) return;
+            const showLogo = data => { if (data) { img.src=data; img.style.display='block'; } else { img.style.display='none'; } };
+            getLoginLogoFromDB().then(data => { if (data) { showLogo(data); return; } showLogo(localStorage.getItem('cctns_login_logo')); }).catch(() => showLogo(localStorage.getItem('cctns_login_logo')));
         }
 
         function initLoginCustomization() {
@@ -1496,14 +1398,24 @@
             updateWalletDisplay();
         }
 
-        function saveDataToStorage() {
-            try {
-                localStorage.setItem('cctns_applications', JSON.stringify(applications));
-                localStorage.setItem('cctns_wallet', wallet.toString());
-            } catch (e) {
-                console.warn("Storage limit reached.");
-            }
+        /* ===== Long-term website data backup: IndexedDB + localStorage ===== */
+        function openCCTNSDataDB() {
+            return new Promise((resolve,reject)=>{
+                if(!window.indexedDB){reject(new Error('IndexedDB unavailable'));return;}
+                const request=indexedDB.open('CCTNSWebsiteDataDB',1);
+                request.onupgradeneeded=e=>{const db=e.target.result;if(!db.objectStoreNames.contains('data'))db.createObjectStore('data');};
+                request.onsuccess=()=>resolve(request.result); request.onerror=()=>reject(request.error);
+            });
         }
+        function saveCCTNSDataToDB(){return openCCTNSDataDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction('data','readwrite');tx.objectStore('data').put({applications:applications,wallet:wallet,localStorage:Object.fromEntries(Object.keys(localStorage).map(k=>[k,localStorage.getItem(k)])),savedAt:Date.now()},'siteData');tx.oncomplete=()=>{db.close();resolve()};tx.onerror=()=>{db.close();reject(tx.error)};}));}
+        function getCCTNSDataFromDB(){return openCCTNSDataDB().then(db=>new Promise((resolve,reject)=>{const tx=db.transaction('data','readonly');const req=tx.objectStore('data').get('siteData');req.onsuccess=()=>{const d=req.result||null;db.close();resolve(d)};req.onerror=()=>{db.close();reject(req.error)};}));}
+        function saveDataToStorage() {
+            try { localStorage.setItem('cctns_applications', JSON.stringify(applications)); localStorage.setItem('cctns_wallet', wallet.toString()); }
+            catch (e) { console.warn("Storage limit reached."); }
+            saveCCTNSDataToDB().catch(()=>{});
+        }
+        // Keep a durable browser backup of the site's stored data without changing the inner UI/features.
+        setInterval(() => { saveCCTNSDataToDB().catch(()=>{}); }, 5000);
 
         function checkAutoApprovals() {
             const currentTime = new Date().getTime();
@@ -2026,7 +1938,18 @@
                 wmImg.src = savedWatermark;
                 wmImg.style.display = 'block';
             }
-            updateCertificate();
+            getCCTNSDataFromDB().then(saved => {
+                if (saved && Array.isArray(saved.applications)) {
+                    applications = saved.applications;
+                    if (typeof saved.wallet === 'number') wallet = saved.wallet;
+                    if (saved.localStorage) {
+                        try { Object.keys(saved.localStorage).forEach(k => localStorage.setItem(k, saved.localStorage[k])); } catch(e) {}
+                    }
+                    try { localStorage.setItem('cctns_applications', JSON.stringify(applications)); localStorage.setItem('cctns_wallet', wallet.toString()); } catch(e) {}
+                    updateWalletDisplay();
+                }
+                updateCertificate();
+            }).catch(() => updateCertificate());
         }
 
         function handleImageUpload(event, storageKey, targetImageId) {
