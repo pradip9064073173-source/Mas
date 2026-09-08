@@ -1267,6 +1267,38 @@
             }
         }
 
+        /* ===== Persistent login logo: IndexedDB with localStorage fallback ===== */
+        function openLoginLogoDB() {
+            return new Promise((resolve, reject) => {
+                if (!window.indexedDB) { reject(new Error('IndexedDB unavailable')); return; }
+                const request = indexedDB.open('CCTNSLoginLogoDB', 1);
+                request.onupgradeneeded = function(e) {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains('logos')) db.createObjectStore('logos');
+                };
+                request.onsuccess = function() { resolve(request.result); };
+                request.onerror = function() { reject(request.error); };
+            });
+        }
+
+        function saveLoginLogoToDB(data) {
+            return openLoginLogoDB().then(db => new Promise((resolve, reject) => {
+                const tx = db.transaction('logos', 'readwrite');
+                tx.objectStore('logos').put(data, 'loginLogo');
+                tx.oncomplete = () => { db.close(); resolve(); };
+                tx.onerror = () => { db.close(); reject(tx.error); };
+            }));
+        }
+
+        function getLoginLogoFromDB() {
+            return openLoginLogoDB().then(db => new Promise((resolve, reject) => {
+                const tx = db.transaction('logos', 'readonly');
+                const req = tx.objectStore('logos').get('loginLogo');
+                req.onsuccess = () => { const data = req.result || null; db.close(); resolve(data); };
+                req.onerror = () => { db.close(); reject(req.error); };
+            }));
+        }
+
         function saveLoginLogo(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
@@ -1277,32 +1309,44 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const data = e.target.result;
-                try {
-                    localStorage.setItem('cctns_login_logo', data);
+                const upload = document.getElementById('cctnsLogoUpload');
+                saveLoginLogoToDB(data).then(() => {
+                    localStorage.removeItem('cctns_login_logo');
                     applySavedLoginLogo();
-                    const upload = document.getElementById('cctnsLogoUpload');
                     if (upload) upload.style.display = 'none';
                     alert('Logo saved permanently on this browser.');
-                } catch (err) {
-                    alert('The logo is too large for browser storage. Please use a smaller image.');
-                }
+                }).catch(() => {
+                    try {
+                        localStorage.setItem('cctns_login_logo', data);
+                        applySavedLoginLogo();
+                        if (upload) upload.style.display = 'none';
+                        alert('Logo saved permanently on this browser.');
+                    } catch (err) {
+                        alert('Unable to save the logo. Please try a smaller image.');
+                    }
+                });
             };
             reader.readAsDataURL(file);
         }
 
         function applySavedLoginLogo() {
-            const data = localStorage.getItem('cctns_login_logo');
             const img = document.getElementById('cctnsLoginLogo');
             const upload = document.getElementById('cctnsLogoUpload');
             if (!img || !upload) return;
-            if (data) {
-                img.src = data;
-                img.style.display = 'block';
-                upload.style.display = 'none';
-            } else {
-                img.style.display = 'none';
-                upload.style.display = 'block';
-            }
+            const showLogo = data => {
+                if (data) {
+                    img.src = data;
+                    img.style.display = 'block';
+                    upload.style.display = 'none';
+                } else {
+                    img.style.display = 'none';
+                    upload.style.display = 'block';
+                }
+            };
+            getLoginLogoFromDB().then(data => {
+                if (data) { showLogo(data); return; }
+                showLogo(localStorage.getItem('cctns_login_logo'));
+            }).catch(() => showLogo(localStorage.getItem('cctns_login_logo')));
         }
 
         function initLoginCustomization() {
