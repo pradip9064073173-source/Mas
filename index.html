@@ -676,7 +676,7 @@
 }
 #loginView .cctns-center-logo{
     position:absolute;
-    top:30%;
+    top:50%;
     left:50%;
     transform:translate(-50%,-50%);
     width:clamp(95px,13vw,180px);
@@ -760,6 +760,56 @@
 #loginView .aeps-login-wrapper .portal-badges span:nth-child(4){
     background:#fff0df;color:#d66b00;border-color:#ffc078;
 }
+
+/* ===== LOGIN PAGE STATE DIVISION BUTTONS (visual only) ===== */
+#loginView .state-division-buttons{
+    position:fixed;
+    left:50%;
+    bottom:22px;
+    transform:translateX(-50%);
+    z-index:6;
+    display:flex;
+    gap:16px;
+    justify-content:center;
+    align-items:center;
+}
+#loginView .state-division-btn{
+    width:190px;
+    min-height:72px;
+    padding:8px 14px;
+    border:1px solid rgba(255,255,255,.55);
+    border-radius:14px;
+    background:rgba(255,255,255,.13);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    font-size:14px;
+    font-weight:800;
+    letter-spacing:.3px;
+    cursor:pointer;
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    box-shadow:0 8px 25px rgba(0,0,0,.28);
+    transition:transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+#loginView .state-division-btn:hover{
+    transform:translateY(-3px);
+    background:rgba(255,255,255,.22);
+    box-shadow:0 12px 30px rgba(0,0,0,.35);
+}
+#loginView .state-map-icon{
+    width:48px;
+    height:54px;
+    flex:0 0 48px;
+    filter:drop-shadow(0 3px 5px rgba(0,0,0,.3));
+}
+@media(max-width:700px){
+    #loginView .state-division-buttons{bottom:62px;gap:8px;width:96%;}
+    #loginView .state-division-btn{width:calc(50% - 4px);min-height:62px;padding:7px 8px;font-size:11px;gap:6px;}
+    #loginView .state-map-icon{width:38px;height:44px;flex-basis:38px;}
+}
 @media(max-width:700px){
     #loginView .cctns-login-banner{top:15px}
     #loginView .cctns-banner-text{letter-spacing:5px}
@@ -794,6 +844,24 @@
             <button class="cctns-reset-btn" onclick="resetLoginPosition()">Reset</button>
         </div>
 
+
+        <!-- Login-page-only state division buttons (no action yet) -->
+        <div class="state-division-buttons">
+            <button type="button" class="state-division-btn" title="West Bengal Division">
+                <svg class="state-map-icon" viewBox="0 0 60 70" aria-hidden="true">
+                    <path d="M17 3 L28 7 L31 15 L39 18 L45 27 L43 35 L50 42 L45 50 L47 59 L39 64 L31 60 L25 66 L18 61 L11 63 L8 54 L12 47 L7 40 L12 33 L10 25 L15 19 L12 12 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+                    <path d="M27 8 L24 20 L29 30 L24 39 L30 49 L27 60" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+                </svg>
+                <span>West Bengal Division</span>
+            </button>
+            <button type="button" class="state-division-btn" title="Maharashtra Division">
+                <svg class="state-map-icon" viewBox="0 0 60 70" aria-hidden="true">
+                    <path d="M5 25 L15 19 L24 21 L31 15 L42 18 L54 27 L51 36 L57 43 L48 48 L43 58 L33 61 L25 55 L16 58 L12 49 L5 44 L9 36 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
+                    <path d="M15 20 L23 31 L36 27 L47 37 L43 51" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
+                </svg>
+                <span>Maharashtra Division</span>
+            </button>
+        </div>
         <!-- ORIGINAL LOGIN CONTENT: unchanged -->
         <div class="aeps-login-wrapper" id="cctnsLoginBox">
             <div class="portal-badges">
