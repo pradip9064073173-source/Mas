@@ -337,7 +337,7 @@
             margin-bottom: 15px;
         }
 
-        /* UP GOV Sub-buttons Container (Moved to Header) */
+        /* UP GOV Sub-buttons Container */
         .upgov-menu {
             display: none;
             flex-direction: column;
@@ -846,7 +846,6 @@
 
     <!-- ================= 1. AEPS & GOVERNANCE PORTAL LOGIN ================= -->
     <div id="loginView" class="view-section active-view">
-        <!-- Login-page-only CCTNS presentation layer -->
         <div class="cctns-login-banner">
             <div class="cctns-banner-text">CCTNS</div>
             <div class="cctns-subtitle">Citizen &amp; Operator Portal</div>
@@ -868,13 +867,10 @@
             <button class="cctns-reset-btn" onclick="resetLoginPosition()">Reset</button>
         </div>
 
-
-        <!-- Login-page-only state division buttons (no action yet) -->
         <div class="state-division-buttons">
             <button type="button" class="state-division-btn" title="West Bengal Division">West Bengal Division</button>
             <button type="button" class="state-division-btn" title="Maharashtra Division">Maharashtra Division</button>
         </div>
-        <!-- ORIGINAL LOGIN CONTENT: unchanged -->
         <div class="aeps-login-wrapper" id="cctnsLoginBox">
             <div class="portal-badges">
                 <span>AEPS</span>
@@ -941,11 +937,9 @@
             <div class="brand-title">CCTNS</div>
             <div class="header-right">
                 
-                <!-- UP GOV Dropdown (Moved to Top Right) -->
                 <div style="position: relative;">
                     <button class="btn" style="background:#004080; color:white; padding:6px 12px; font-size:13px;" onclick="toggleUPGovMenu()">UP GOV ▼</button>
                     <div id="upgovSubMenu" class="upgov-menu">
-                        <!-- এখানে toggleUPGovMenu() সরিয়ে দেওয়া হয়েছে, কারণ switchTab নিজেই মেনুটিকে হাইড করে দেবে -->
                         <button class="upgov-sub-btn" onclick="switchTab('servicesTab')">Services</button>
                         <button class="upgov-sub-btn" onclick="switchTab('trackTab')">Track Application</button>
                         <button class="upgov-sub-btn" onclick="switchTab('paymentTab')">Payment</button>
@@ -955,10 +949,8 @@
                     </div>
                 </div>
 
-                <!-- Wallet Balance (Hidden by default, shows only on Payment Tab) -->
                 <div id="walletDisplayContainer" class="wallet-display" style="display: none;">Wallet Balance: ₹<span id="walletBalance">1900</span></div>
                 
-                <!-- Background Upload Button -->
                 <div id="bgUploadContainer" class="logo-upload-container" title="Change Portal Background">
                     <label class="pencil-btn">
                         ✏️ <input type="file" accept="image/*" style="display:none;" onchange="uploadPortalBackground(event)">
@@ -969,25 +961,20 @@
             </div>
         </div>
 
-        <!-- Dynamic Navigation Bar -->
         <div id="navBar" class="dashboard-nav">
             <button class="nav-btn active" onclick="switchTab('homeTab', event)">Home</button>
         </div>
 
         <!-- ================= DEDICATED TAB INTERFACES ================= -->
-
-        <!-- TAB 1: HOME (Welcome Page) -->
         <div id="homeTab" class="tab-content active-tab">
             <div style="max-width: 650px; margin-left: auto;">
                 <div class="welcome-heading" style="text-shadow: 2px 2px 6px rgba(255,255,255,0.9); font-size: 32px;">Welcome to CCTNS Citizen & Operator Portal</div>
                 <p style="color:#111; font-size:16px; font-weight:bold; text-shadow: 1px 1px 4px rgba(255,255,255,0.9);">Crime and Criminal Tracking Network & Systems - Fast, Reliable and Secure Governance Services.</p>
                 <hr style="margin:25px 0; border:0; border-top:1px solid rgba(0,0,0,0.4);">
                 <h3 style="color:#004080; margin-bottom:15px; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">Available Service</h3>
-                <!-- Note: UP Gov Button has been moved to top right header -->
             </div>
         </div>
 
-        <!-- TAB 2: SERVICES (Character Certificate Form) -->
         <div id="servicesTab" class="tab-content">
             <div class="page-card">
                 <div class="welcome-heading">Select Service</div>
@@ -995,14 +982,12 @@
                     <button class="btn" style="background:#004080; color:white;" onclick="openCertificateForm()">Uttar Pradesh - Character Certificate</button>
                 </div>
 
-                <!-- Certificate Form Container -->
                 <div id="certFormWrapper" style="display:none; margin-top:20px;">
                     <h3 style="color:#004080; border-bottom:2px solid #004080; padding-bottom:5px;">Character Certificate Form</h3>
                     
                     <div class="control-panel">
                         <div class="form-grid">
                             
-                            <!-- Certificate Logo Upload Group (Will hide permanently after upload) -->
                             <div class="form-group" id="logoUploadGroup">
                                 <label>Upload Certificate Logo (লোগো একবার আপলোড করলে সারাজীবন সেভ থাকবে):</label>
                                 <input type="file" id="inputLogoFile" accept="image/*" onchange="handleImageUpload(event, 'savedLogo', 'dispLogo')">
@@ -1088,7 +1073,6 @@
                                 <input type="text" id="inputStation" value="Nawabganj , District Gonda" oninput="updateCertificate()">
                             </div>
 
-                            <!-- Single Submit Button -->
                             <div class="panel-buttons">
                                 <button class="btn" style="background:#28a745; color:white; width:100%;" onclick="submitCertificateForm()">Submit Application</button>
                             </div>
@@ -1098,7 +1082,6 @@
             </div>
         </div>
 
-        <!-- TAB 3: TRACK APPLICATION -->
         <div id="trackTab" class="tab-content">
             <div class="page-card">
                 <div class="welcome-heading">Track Application Status</div>
@@ -1110,7 +1093,6 @@
             </div>
         </div>
 
-        <!-- TAB 4: PAYMENT -->
         <div id="paymentTab" class="tab-content">
             <div class="page-card">
                 <div class="welcome-heading">Pending Payments</div>
@@ -1129,7 +1111,6 @@
             </div>
         </div>
 
-        <!-- TAB 5: DOWNLOAD CERTIFICATE -->
         <div id="downloadTab" class="tab-content">
             <div class="page-card">
                 <div class="welcome-heading">Download Approved Certificate</div>
@@ -1141,7 +1122,6 @@
             </div>
         </div>
 
-        <!-- TAB 6: CERTIFICATE VALIDATION -->
         <div id="validationTab" class="tab-content">
             <div class="page-card">
                 <div class="welcome-heading">Certificate Validation</div>
@@ -1153,7 +1133,6 @@
             </div>
         </div>
 
-        <!-- TAB 7: DEPARTMENTAL LOGIN (ADMIN) -->
         <div id="adminTab" class="tab-content">
             <div class="page-card">
                 <div class="welcome-heading">Departmental / Admin Approval Portal</div>
@@ -1166,7 +1145,6 @@
                 </div>
 
                 <div id="adminDashboard" style="display:none; margin-top:20px;">
-                    <!-- Admin Wallet Control Section -->
                     <div style="background:#e6f2ff; padding:15px; border-radius:8px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center;">
                         <div>
                             <strong>Manage Wallet Balance: </strong> Current: ₹<span id="adminWalletDisplay">1900</span>
@@ -1196,7 +1174,6 @@
 
     </div>
 
-    <!-- Hidden Master Certificate Container for PDF Generation -->
     <div id="certificate" class="certificate-container">
         <div class="header">
             <div class="logo-section">
@@ -1251,7 +1228,6 @@
         </div>
     </div>
 
-    <!-- ================= JAVASCRIPT LOGIC ================= -->
     <script>
         let applications = [];
         let wallet = 1900;
@@ -1261,6 +1237,26 @@
         let successModalTimer = null;
         let successCountdown = 30;
 
+        // --- NEW FUNCTION: Load Saved Data into DOM before PDF Generation/Preview ---
+        function loadApplicationDataToDOM(certNo) {
+            let app = applications.find(a => a.certNo === certNo);
+            if (app) {
+                document.getElementById('inputCertNo').value = app.certNo || '';
+                document.getElementById('inputName').value = app.name || '';
+                document.getElementById('inputGuardian').value = app.guardian || '';
+                document.getElementById('inputDate').value = app.issueDate || '';
+                
+                if(app.district) document.getElementById('inputDistrict').value = app.district;
+                if(app.station) document.getElementById('inputStation').value = app.station;
+                if(app.sigName) document.getElementById('inputSigName').value = app.sigName;
+                if(app.sigSigned) document.getElementById('inputSigSigned').value = app.sigSigned;
+                if(app.sigDate) document.getElementById('inputSigDate').value = app.sigDate;
+                
+                if(app.photo) document.getElementById('dispPhoto').src = app.photo;
+
+                updateCertificate();
+            }
+        }
 
         /* ===== Persistent login-page customization ===== */
         function applyLoginLayout() {
@@ -1379,14 +1375,14 @@
             }));
         }
 
+        function lockLoginLogoEditorAfterFirstSave() {
+            const selectors = ['.cctns-logo-edit','.cctns-logo-pencil','[id*="pencil"]'];
+            selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('has-saved-logo'); el.style.display='none'; }));
+            const upload = document.getElementById('cctnsLogoUpload');
+            if (upload) upload.style.display='none';
+        }
         
-function lockLoginLogoEditorAfterFirstSave() {
-    const selectors = ['.cctns-logo-edit','.cctns-logo-pencil','[id*="pencil"]'];
-    selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('has-saved-logo'); el.style.display='none'; }));
-    const upload = document.getElementById('cctnsLogoUpload');
-    if (upload) upload.style.display='none';
-}
-function saveLoginLogo(event) {
+        function saveLoginLogo(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
             if (!file.type.startsWith('image/')) {
@@ -1483,7 +1479,6 @@ function saveLoginLogo(event) {
             window.addEventListener('resize', positionLoginTools);
         }
 
-
         function initApp() {
             initLoginCustomization();
             const sessionLoginTime = localStorage.getItem('sessionLoginTime');
@@ -1510,7 +1505,6 @@ function saveLoginLogo(event) {
             const savedBg = localStorage.getItem('portalBackground');
             if (savedBg) {
                 document.getElementById('homeTab').style.backgroundImage = `url('${savedBg}')`;
-                // Background pencil button hide forever
                 document.getElementById('bgUploadContainer').style.display = 'none';
             }
 
@@ -1551,7 +1545,6 @@ function saveLoginLogo(event) {
             menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
         }
 
-        // --- CSC LOGIN & OTP ---
         function triggerOTP() {
             const aadhaar = document.getElementById('loginAadhaar').value.trim();
             if (aadhaar !== "999900009999") {
@@ -1610,13 +1603,11 @@ function saveLoginLogo(event) {
             document.getElementById('enteredOtp').value = "";
         }
 
-        // --- NAVIGATION TABS ---
         function switchTab(tabId, eventObj) {
             const tabs = document.querySelectorAll('.tab-content');
             tabs.forEach(t => t.classList.remove('active-tab'));
             document.getElementById(tabId).classList.add('active-tab');
             
-            // Close UP GOV menu if open (এটি মেনুটিকে অটোমেটিক হাইড করবে)
             document.getElementById('upgovSubMenu').style.display = 'none';
 
             const navBar = document.getElementById('navBar');
@@ -1626,7 +1617,6 @@ function saveLoginLogo(event) {
                 navBar.innerHTML = `<button class="nav-btn active" onclick="switchTab('homeTab', event)">Home / Back</button>`;
             }
 
-            // Wallet visibility logic (Only show in paymentTab)
             if (tabId === 'paymentTab') {
                 document.getElementById('walletDisplayContainer').style.display = 'block';
                 renderPaymentTable();
@@ -1644,7 +1634,6 @@ function saveLoginLogo(event) {
             document.getElementById('certFormWrapper').style.display = 'block';
         }
 
-        // --- WALLET & SUBMISSION ---
         function updateWalletDisplay() {
             document.getElementById('walletBalance').innerText = wallet;
             const adminDisp = document.getElementById('adminWalletDisplay');
@@ -1683,22 +1672,29 @@ function saveLoginLogo(event) {
             }
 
             let existing = applications.find(a => a.certNo === certNo);
+            
+            // NEW: All Details including Photo are being saved
+            let newAppData = {
+                certNo: certNo,
+                name: name,
+                guardian: document.getElementById('inputGuardian').value.trim(),
+                address: document.getElementById('inputGuardian').value.trim(),
+                issueDate: document.getElementById('inputDate').value.trim(),
+                district: document.getElementById('inputDistrict').value.trim(),
+                station: document.getElementById('inputStation').value.trim(),
+                sigName: document.getElementById('inputSigName').value,
+                sigSigned: document.getElementById('inputSigSigned').value,
+                sigDate: document.getElementById('inputSigDate').value,
+                photo: document.getElementById('dispPhoto').src,
+                status: existing ? existing.status : 'Under Process',
+                paid: existing ? existing.paid : false,
+                timestamp: existing ? existing.timestamp : new Date().getTime()
+            };
+
             if (!existing) {
-                applications.push({
-                    certNo: certNo,
-                    name: name,
-                    guardian: document.getElementById('inputGuardian').value.trim(),
-                    address: document.getElementById('inputGuardian').value.trim(),
-                    issueDate: document.getElementById('inputDate').value.trim(),
-                    status: 'Under Process',
-                    paid: false,
-                    timestamp: new Date().getTime()
-                });
+                applications.push(newAppData);
             } else {
-                existing.name = name;
-                existing.guardian = document.getElementById('inputGuardian').value.trim();
-                existing.address = document.getElementById('inputGuardian').value.trim();
-                existing.issueDate = document.getElementById('inputDate').value.trim();
+                Object.assign(existing, newAppData);
             }
 
             saveDataToStorage();
@@ -1726,7 +1722,6 @@ function saveLoginLogo(event) {
             switchTab('homeTab');
         }
 
-        // --- TRACK APPLICATION ---
         function trackApplication() {
             checkAutoApprovals();
             const query = document.getElementById('trackCertNoInput').value.trim();
@@ -1763,7 +1758,6 @@ function saveLoginLogo(event) {
             }
         }
 
-        // --- CERTIFICATE VALIDATION ---
         function validateCertificate() {
             const query = document.getElementById('validationCertNoInput').value.trim();
             const resDiv = document.getElementById('validationResult');
@@ -1801,7 +1795,6 @@ function saveLoginLogo(event) {
             `;
         }
 
-        // --- PAYMENT GATEWAY ---
         function renderPaymentTable() {
             const tbody = document.querySelector('#paymentTable tbody');
             tbody.innerHTML = '';
@@ -1838,7 +1831,6 @@ function saveLoginLogo(event) {
             renderPaymentTable();
         }
 
-        // --- DOWNLOAD CERTIFICATE SECTION ---
         function searchForDownload() {
             checkAutoApprovals();
             const query = document.getElementById('downloadCertNoInput').value.trim();
@@ -1881,10 +1873,12 @@ function saveLoginLogo(event) {
             `;
         }
 
-        // --- 100% BULLETPROOF DOWNLOAD FUNCTION (Untouched) ---
+        // --- 100% BULLETPROOF DOWNLOAD FUNCTION ---
         function downloadPDF(targetCertNo = null) {
             if (targetCertNo) {
-                document.getElementById('inputCertNo').value = targetCertNo;
+                // NEW: loading the right data to DOM before printing
+                loadApplicationDataToDOM(targetCertNo); 
+            } else {
                 updateCertificate();
             }
             
@@ -1924,14 +1918,12 @@ function saveLoginLogo(event) {
             }, 300); 
         }
 
-        // --- PREVIEW FUNCTIONALITY ---
         function previewCertificate(certNo) {
+            // NEW: load data before previewing
+            loadApplicationDataToDOM(certNo);
             let app = applications.find(a => a.certNo === certNo);
+            
             if (app) {
-                document.getElementById('inputCertNo').value = app.certNo;
-                document.getElementById('inputName').value = app.name;
-                updateCertificate();
-
                 const certNode = document.getElementById('certificate').cloneNode(true);
                 certNode.id = 'previewCertificateNode';
                 
@@ -1961,7 +1953,6 @@ function saveLoginLogo(event) {
             document.getElementById('previewWrapper').innerHTML = ''; 
         }
 
-        // --- DEPARTMENTAL ADMIN LOGIN & EDIT/DELETE ---
         function adminLogin() {
             const uid = document.getElementById('adminUserId').value.trim();
             if (uid === "9064073173") {
@@ -2017,9 +2008,10 @@ function saveLoginLogo(event) {
             let app = applications[index];
             switchTab('servicesTab');
             openCertificateForm();
-            document.getElementById('inputCertNo').value = app.certNo;
-            document.getElementById('inputName').value = app.name;
-            updateCertificate();
+            
+            // Auto load data for editing
+            loadApplicationDataToDOM(app.certNo);
+            
             alert("Application data loaded for editing. Modify the details in the form and click Submit to save changes.");
         }
 
@@ -2032,12 +2024,10 @@ function saveLoginLogo(event) {
             }
         }
 
-        // --- PERSISTENT LOGO, WATERMARK & BACKGROUND LOGIC WITH SAFE BASE64 ENCODING ---
         function loadPersistentData() {
             const savedLogo = localStorage.getItem('savedLogo');
             if (savedLogo) {
                 document.getElementById('dispLogo').src = savedLogo;
-                // Logo form upload hide forever
                 const logoGroup = document.getElementById('logoUploadGroup');
                 if(logoGroup) logoGroup.style.display = 'none';
             }
@@ -2061,7 +2051,6 @@ function saveLoginLogo(event) {
                     try {
                         localStorage.setItem(storageKey, base64Data);
                         
-                        // Hide logo button immediately after upload
                         if (storageKey === 'savedLogo') {
                             const logoGroup = document.getElementById('logoUploadGroup');
                             if(logoGroup) logoGroup.style.display = 'none';
@@ -2106,7 +2095,6 @@ function saveLoginLogo(event) {
                         console.warn("Storage limit reached.");
                     }
                     
-                    // Background upload button hide forever
                     document.getElementById('bgUploadContainer').style.display = 'none';
                     alert("Portal Background Updated & Saved Permanently!");
                 }
