@@ -836,7 +836,12 @@
 }
 
     </style>
-</head>
+<style id="final-login-logo-lock">
+/* After the first logo upload, the pencil/edit control stays hidden permanently on this browser. */
+#loginView .cctns-logo-edit.has-saved-logo,
+#loginView .cctns-logo-pencil.has-saved-logo,
+#loginView [id*="pencil"].has-saved-logo { display:none !important; }
+</style></head>
 <body onload="initApp()">
 
     <!-- ================= 1. AEPS & GOVERNANCE PORTAL LOGIN ================= -->
@@ -866,20 +871,8 @@
 
         <!-- Login-page-only state division buttons (no action yet) -->
         <div class="state-division-buttons">
-            <button type="button" class="state-division-btn" title="West Bengal Division">
-                <svg class="state-map-icon" viewBox="0 0 60 70" aria-hidden="true">
-                    <path d="M17 3 L28 7 L31 15 L39 18 L45 27 L43 35 L50 42 L45 50 L47 59 L39 64 L31 60 L25 66 L18 61 L11 63 L8 54 L12 47 L7 40 L12 33 L10 25 L15 19 L12 12 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-                    <path d="M27 8 L24 20 L29 30 L24 39 L30 49 L27 60" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
-                </svg>
-                <span>West Bengal Division</span>
-            </button>
-            <button type="button" class="state-division-btn" title="Maharashtra Division">
-                <svg class="state-map-icon" viewBox="0 0 60 70" aria-hidden="true">
-                    <path d="M5 25 L15 19 L24 21 L31 15 L42 18 L54 27 L51 36 L57 43 L48 48 L43 58 L33 61 L25 55 L16 58 L12 49 L5 44 L9 36 Z" fill="none" stroke="currentColor" stroke-width="3" stroke-linejoin="round"/>
-                    <path d="M15 20 L23 31 L36 27 L47 37 L43 51" fill="none" stroke="currentColor" stroke-width="1.4" opacity=".7"/>
-                </svg>
-                <span>Maharashtra Division</span>
-            </button>
+            <button type="button" class="state-division-btn" title="West Bengal Division">West Bengal Division</button>
+            <button type="button" class="state-division-btn" title="Maharashtra Division">Maharashtra Division</button>
         </div>
         <!-- ORIGINAL LOGIN CONTENT: unchanged -->
         <div class="aeps-login-wrapper" id="cctnsLoginBox">
@@ -1386,7 +1379,14 @@
             }));
         }
 
-        function saveLoginLogo(event) {
+        
+function lockLoginLogoEditorAfterFirstSave() {
+    const selectors = ['.cctns-logo-edit','.cctns-logo-pencil','[id*="pencil"]'];
+    selectors.forEach(sel => document.querySelectorAll(sel).forEach(el => { el.classList.add('has-saved-logo'); el.style.display='none'; }));
+    const upload = document.getElementById('cctnsLogoUpload');
+    if (upload) upload.style.display='none';
+}
+function saveLoginLogo(event) {
             const file = event.target.files && event.target.files[0];
             if (!file) return;
             if (!file.type.startsWith('image/')) {
