@@ -22,6 +22,29 @@
             display: block !important;
         }
 
+        /* --- Dashboard Stats (NEW) --- */
+        .stats-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            padding: 20px;
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .stat-total { background: #007bff; }
+        .stat-pending { background: #fd7e14; }
+        .stat-approved { background: #28a745; }
+        .stat-rejected { background: #dc3545; }
+        .stat-card h4 { margin: 0; font-size: 16px; font-weight: normal; }
+        .stat-card span { font-size: 28px; font-weight: bold; display: block; margin-top: 10px; }
+
         /* --- 1. AEPS STYLE LOGIN PAGE (Right Aligned) --- */
         #loginView {
             display: flex;
@@ -971,7 +994,28 @@
                 <div class="welcome-heading" style="text-shadow: 2px 2px 6px rgba(255,255,255,0.9); font-size: 32px;">Welcome to CCTNS Citizen & Operator Portal</div>
                 <p style="color:#111; font-size:16px; font-weight:bold; text-shadow: 1px 1px 4px rgba(255,255,255,0.9);">Crime and Criminal Tracking Network & Systems - Fast, Reliable and Secure Governance Services.</p>
                 <hr style="margin:25px 0; border:0; border-top:1px solid rgba(0,0,0,0.4);">
-                <h3 style="color:#004080; margin-bottom:15px; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">Available Service</h3>
+                
+                <!-- NEW DASHBOARD STATS -->
+                <div class="stats-container">
+                    <div class="stat-card stat-total">
+                        <h4>Total Applications</h4>
+                        <span id="statTotalCount">0</span>
+                    </div>
+                    <div class="stat-card stat-pending">
+                        <h4>Pending Process</h4>
+                        <span id="statPendingCount">0</span>
+                    </div>
+                    <div class="stat-card stat-approved">
+                        <h4>Ready for Download</h4>
+                        <span id="statApprovedCount">0</span>
+                    </div>
+                    <div class="stat-card stat-rejected">
+                        <h4>Rejected</h4>
+                        <span id="statRejectedCount">0</span>
+                    </div>
+                </div>
+                
+                <h3 style="color:#004080; margin-bottom:15px; margin-top:25px; text-shadow: 1px 1px 3px rgba(255,255,255,0.9);">Available Service</h3>
             </div>
         </div>
 
@@ -1237,7 +1281,18 @@
         let successModalTimer = null;
         let successCountdown = 30;
 
-        // --- NEW FUNCTION: Load Saved Data into DOM before PDF Generation/Preview ---
+        function updateDashboardCounters() {
+            let total = applications.length;
+            let pending = applications.filter(a => a.status === 'Under Process').length;
+            let approved = applications.filter(a => a.status === 'Approved').length;
+            let rejected = applications.filter(a => a.status === 'Rejected').length;
+            
+            document.getElementById('statTotalCount').innerText = total;
+            document.getElementById('statPendingCount').innerText = pending;
+            document.getElementById('statApprovedCount').innerText = approved;
+            document.getElementById('statRejectedCount').innerText = rejected;
+        }
+
         function loadApplicationDataToDOM(certNo) {
             let app = applications.find(a => a.certNo === certNo);
             if (app) {
@@ -1510,6 +1565,7 @@
 
             loadPersistentData();
             updateWalletDisplay();
+            updateDashboardCounters();
         }
 
         function saveDataToStorage() {
@@ -1537,6 +1593,7 @@
 
             if (updated) {
                 saveDataToStorage();
+                updateDashboardCounters();
             }
         }
 
@@ -1628,6 +1685,10 @@
                 checkAutoApprovals();
                 renderAdminTable();
             }
+            
+            if (tabId === 'homeTab') {
+                updateDashboardCounters();
+            }
         }
 
         function openCertificateForm() {
@@ -1673,7 +1734,6 @@
 
             let existing = applications.find(a => a.certNo === certNo);
             
-            // NEW: All Details including Photo are being saved
             let newAppData = {
                 certNo: certNo,
                 name: name,
@@ -1698,6 +1758,7 @@
             }
 
             saveDataToStorage();
+            updateDashboardCounters();
 
             document.getElementById('successCertNo').innerText = certNo;
             document.getElementById('successModal').style.display = 'flex';
@@ -1730,8 +1791,18 @@
 
             if (found) {
                 const isApproved = found.status === 'Approved';
-                const statusText = isApproved ? 'Successful' : 'Under Process';
-                const statusColor = isApproved ? '#198754' : '#ff9800';
+                const isRejected = found.status === 'Rejected';
+                
+                let statusText = 'Under Process';
+                let statusColor = '#ff9800';
+
+                if (isApproved) {
+                    statusText = 'Successful';
+                    statusColor = '#198754';
+                } else if (isRejected) {
+                    statusText = 'Rejected';
+                    statusColor = '#dc3545';
+                }
 
                 resDiv.innerHTML = `
                     <div style="margin-top:15px; overflow-x:auto;">
@@ -1763,8 +1834,13 @@
             const resDiv = document.getElementById('validationResult');
             const found = applications.find(a => a.certNo === query);
 
-            if (!found) {
-                resDiv.innerHTML = `<p style="color:red;">Certificate not found with this Application ID / Certificate No.</p>`;
+            if (!found || found.status === 'Under Process') {
+                resDiv.innerHTML = `<p style="color:red;">Invalid Application ID or Certificate not yet approved.</p>`;
+                return;
+            }
+            
+            if (found.status === 'Rejected') {
+                resDiv.innerHTML = `<p style="color:red; font-weight:bold; font-size:18px;">Application Status: Rejected.</p>`;
                 return;
             }
 
@@ -1843,11 +1919,21 @@
             }
 
             const isApproved = found.status === 'Approved';
-            const statusText = isApproved ? 'Approved' : 'Under Process';
-            const statusColor = isApproved ? '#198754' : '#ff9800';
-            const actionHtml = isApproved
-                ? `<button class="btn-action" onclick="downloadPDF('${found.certNo}')">Download</button>`
-                : `<span style="color:#ff9800; font-weight:bold;">Under Process</span>`;
+            const isRejected = found.status === 'Rejected';
+            
+            let statusText = 'Under Process';
+            let statusColor = '#ff9800';
+            let actionHtml = `<span style="color:#ff9800; font-weight:bold;">Under Process</span>`;
+
+            if (isApproved) {
+                statusText = 'Approved';
+                statusColor = '#198754';
+                actionHtml = `<button class="btn-action" onclick="downloadPDF('${found.certNo}')">Download</button>`;
+            } else if (isRejected) {
+                statusText = 'Rejected';
+                statusColor = '#dc3545';
+                actionHtml = `<span style="color:#dc3545; font-weight:bold;">Rejected</span>`;
+            }
 
             resDiv.innerHTML = `
                 <div style="margin-top:15px; overflow-x:auto;">
@@ -1876,7 +1962,6 @@
         // --- 100% BULLETPROOF DOWNLOAD FUNCTION ---
         function downloadPDF(targetCertNo = null) {
             if (targetCertNo) {
-                // NEW: loading the right data to DOM before printing
                 loadApplicationDataToDOM(targetCertNo); 
             } else {
                 updateCertificate();
@@ -1919,7 +2004,6 @@
         }
 
         function previewCertificate(certNo) {
-            // NEW: load data before previewing
             loadApplicationDataToDOM(certNo);
             let app = applications.find(a => a.certNo === certNo);
             
@@ -1975,9 +2059,16 @@
                 return;
             }
             applications.forEach((app, index) => {
-                let actionBtn = app.status === 'Approved' ? 
-                    `<button class="btn-action btn-info" onclick="previewCertificate('${app.certNo}')">Preview & Download</button>` : 
-                    `<button class="btn-action" onclick="approveApplication('${app.certNo}')">Approve</button> <button class="btn-action btn-info" onclick="previewCertificate('${app.certNo}')">Preview & Download</button>`;
+                let actionBtn = '';
+                if (app.status === 'Approved') {
+                    actionBtn = `<button class="btn-action btn-info" onclick="previewCertificate('${app.certNo}')">Preview & Download</button>`;
+                } else if (app.status === 'Rejected') {
+                    actionBtn = `<span style="color:#dc3545; font-weight:bold; margin-right:5px;">Rejected</span>`;
+                } else {
+                    actionBtn = `<button class="btn-action" onclick="approveApplication('${app.certNo}')">Approve</button> 
+                                 <button class="btn-action btn-danger" style="background:#ff9800; border-color:#ff9800;" onclick="rejectApplication('${app.certNo}')">Reject</button>
+                                 <button class="btn-action btn-info" onclick="previewCertificate('${app.certNo}')">Preview</button>`;
+                }
                 
                 tbody.innerHTML += `
                     <tr>
@@ -1986,7 +2077,7 @@
                         <td>${app.status}</td>
                         <td>
                             ${actionBtn}
-                            <button class="btn-action" onclick="editApplication(${index})">Edit</button>
+                            <button class="btn-action" style="background:#6c757d;" onclick="editApplication(${index})">Edit</button>
                             <button class="btn-action btn-danger" onclick="deleteApplication(${index})">Delete</button>
                         </td>
                     </tr>
@@ -2001,6 +2092,20 @@
                 saveDataToStorage();
                 alert("Application " + certNo + " Approved Successfully!");
                 renderAdminTable();
+                updateDashboardCounters();
+            }
+        }
+
+        function rejectApplication(certNo) {
+            if (confirm("Are you sure you want to reject this application?")) {
+                let app = applications.find(a => a.certNo === certNo);
+                if (app) {
+                    app.status = 'Rejected';
+                    saveDataToStorage();
+                    alert("Application " + certNo + " Rejected Successfully!");
+                    renderAdminTable();
+                    updateDashboardCounters();
+                }
             }
         }
 
@@ -2020,6 +2125,7 @@
                 applications.splice(index, 1);
                 saveDataToStorage();
                 renderAdminTable();
+                updateDashboardCounters();
                 alert("Application Deleted Successfully!");
             }
         }
